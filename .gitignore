@@ -1,20 +1,20 @@
-
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
+# Environnements locaux
+/.env.dev
+/.env.test
 /.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+
+# Cache, logs et sessions
 /var/
+
+# Dépendances Composer
 /vendor/
-###< symfony/framework-bundle ###
 
-###> phpunit/phpunit ###
-/phpunit.xml
-/.phpunit.cache/
-###< phpunit/phpunit ###
+# Clés SSL locales (si tu utilises symfony serve avec TLS)
+/.config/
 
-###> symfony/asset-mapper ###
-/public/assets/
-/assets/vendor/
-###< symfony/asset-mapper ###
+# Fichiers générés par PHPUnit
+.phpunit.result.cache
+
+# Fichiers système
+.DS_Store
+Thumbs.db

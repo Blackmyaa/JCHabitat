@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact - JC Habitat
+{% endblock %}
+
+{% block body %}
+	<body class="d-flex flex-column min-vh-100">
+		<div class="container py-5">
+			<h1 class="mb-4">Contactez-nous</h1>
+
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">{{ message }}</div>
+			{% endfor %}
+
+			{{ form_start(form) }}
+			<div class="mb-3">
+				{{ form_label(form.nom) }}
+				{{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="mb-3">
+				{{ form_label(form.prenom) }}
+				{{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+			</div>
+
+			<div class="mb-3">
+				{{ form_label(form.telephone) }}
+				{{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="mb-3">
+				{{ form_label(form.email) }}
+				{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="mb-3">
+				{{ form_label(form.message) }}
+				{{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+			</div>
+			<button class="btn btn-primary">Envoyer</button>
+			{{ form_end(form) }}
+            <a class="py-3" href="{{ path('app_accueil')}}"><button class="btn btn-dark">Retour à l'accueil</button></a>
+		</div>
+		{% include "commun/_footer.html.twig" %}
+	</body>
+{% endblock %}

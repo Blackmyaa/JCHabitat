@@ -1,392 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Votre Nouveau cumulus à partir de 799€
-{% endblock %}
-{% block stylesheets %}
-	<style>
-		body {
-			background: #e0e0e0;
-			font-family: sans-serif;
-			margin: 0;
-		}
-		.scene {
-			position: relative;
-			width: 100%;
-			height: 400px;
-			background: repeating-linear-gradient(90deg, #d8cfc4 0px, #d8cfc4 60px, #cfc6bb 60px, #cfc6bb 61px), repeating-linear-gradient(0deg, #d8cfc4 0px, #d8cfc4 60px, #cfc6bb 60px, #cfc6bb 61px);
-			background-size: cover;
-			border-top: 4px solid #aaa;
-			border-bottom: 4px solid #aaa;
-		}
-		.slogan {
-			text-align: center;
-			font-size: 1.6em;
-			font-weight: bold;
-			margin-bottom: 20px;
-			color: #333;
-		}
+{% block title %}JC Habitat - Remplacement de Cumulus à partir de 799€{% endblock %}
 
-		/* Bouton */
-		button {
-			margin-top: 20px;
-			padding: 10px 20px;
-			font-size: 1em;
-			background: #0077cc;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-		}
-
-		/* Cumulus commun */
-		.cumulus {
-			position: absolute;
-			width: 120px;
-			height: 200px;
-			border-radius: 60px;
-			top: 100px;
-			transition: all 2.5s ease;
-		}
-
-		/* Vieux cumulus */
-		.cumulus.old {
-			background: #666;
-			left: 250px;
-			opacity: 1;
-		}
-
-		.cumulus.old.exit {
-			left: -200px;
-			opacity: 0;
-		}
-
-		/* Nouveau cumulus */
-		.cumulus.new {
-			background: #fff;
-			left: 100%;
-			opacity: 0;
-			box-shadow: 0 0 10px #0ff;
-		}
-
-		.cumulus.new.active {
-			left: 250px;
-			opacity: 1;
-		}
-
-		/* Support mural */
-		.support {
-			position: absolute;
-			bottom: -10px;
-			left: 10px;
-			width: 100px;
-			height: 10px;
-			background: #444;
-			border-radius: 5px;
-		}
-
-		/* LED affichage */
-		.led {
-			position: absolute;
-			top: 10px;
-			left: 50%;
-			transform: translateX(-50%);
-			background: red;
-			color: white;
-			padding: 4px 8px;
-			border-radius: 6px;
-			font-size: 0.9em;
-			box-shadow: 0 0 8px red;
-		}
-
-		/* LED supplémentaires */
-		.leds {
-			position: absolute;
-			top: 40px;
-			left: 50%;
-			transform: translateX(-50%);
-			display: flex;
-			gap: 6px;
-		}
-
-		.leds::before,
-		.leds::after {
-			content: "";
-			width: 8px;
-			height: 8px;
-			background: #0ff;
-			border-radius: 50%;
-			box-shadow: 0 0 6px #0ff;
-		}
-
-		/* Vapeur */
-		.vapeur {
-			position: absolute;
-			bottom: -20px;
-			left: 50%;
-			transform: translateX(-50%);
-			width: 20px;
-			height: 20px;
-			border-radius: 50%;
-			animation: vapeur 2s infinite ease-in-out;
-		}
-
-		.vapeur.noir {
-			background: rgba(0, 0, 0, 0.6);
-		}
-
-		.vapeur.blanche {
-			background: rgba(255, 255, 255, 0.6);
-		}
-
-		/* Vapeur animation */
-		@keyframes vapeur {
-			0% {
-				transform: translateX(-50%) translateY(0) scale(1);
-				opacity: 1;
-			}
-			100% {
-				transform: translateX(-50%) translateY(-40px) scale(1.5);
-				opacity: 0;
-			}
-		}
-
-		/* Taches sur l'ancien */
-		.taches {
-			position: absolute;
-			top: 60px;
-			left: 20px;
-			width: 80px;
-			height: 80px;
-			background: radial-gradient(circle, #4a3f3f 10%, transparent 70%);
-			opacity: 0.5;
-			border-radius: 50%;
-		}
-
-		/* Étiquettes */
-		.label {
-			position: absolute;
-			top: 60px;
-			width: 100%;
-			text-align: center;
-			font-weight: bold;
-			font-size: 0.9em;
-			color: black;
-		}
-
-        .camionnette {
-            position: absolute;
-            bottom: 40px;
-            right: -200px;
-            width: 160px;
-            height: 80px;
-            z-index: 10;
-            transition: right 3s ease;
-        }
-
-        /* Corps principal */
-        .corps {
-            width: 120px;
-            height: 60px;
-            background: white;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            position: absolute;
-            right: 0;
-            top: 0;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-            /* Cabine avant */
-        .cabine {
-            width: 40px;
-            height: 50px;
-            background: #eee;
-            border: 2px solid #ccc;
-            border-radius: 6px 0 0 6px;
-            position: absolute;
-            left: 0;
-            top: 10px;
-        }
-
-        /* Roues */
-        .roue {
-            width: 30px;
-            height: 30px;
-            background: #333;
-            border-radius: 50%;
-            position: absolute;
-            bottom: -10px;
-        }
-        .rayons {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .rayons::before,
-        .rayons::after {
-            content: "";
-            position: absolute;
-            background: #ccc;
-            width: 2px;
-            height: 100%;
-            left: 50%;
-            top: 0;
-            transform: translateX(-50%);
-        }
-
-        .rayons::after {
-            transform: rotate(90deg);
-            transform-origin: center;
-        }
-        .roue1 { left: 20px; }
-        .roue2 { right: 20px; }
-
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(-360deg); }
-        }
-
-        .roue.rotate {
-            animation: rotation 0.5s linear infinite;
-        }
-
-
-        /* Logo */
-        .logo {
-            font-weight: bold;
-            font-size: 0.8em;
-            padding: 6px;
-            text-align: center;
-            z-index: 2;
-        }
-
-        .logo-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* remplit sans déformer */
-        }
-
-        /* Animation déclenchée */
-        .camionnette.active {
-            right: 580px;
-        }
-
-        .camionnette.demiTour {
-            transform: scaleX(-1); /* effet miroir */
-            transition: transform 1s ease;
-        }
-
-        .camionnette.demiTour .logo {
-            transform: scaleX(-1); /* remet le texte à l'endroit */
-        }
-        
-        .camionnette.depart {
-            right: -200px;
-            transition: right 3s ease;
-        }
-
-        .camionnette.exit {
-            right: -200px;
-            transition: right 3s ease;
-        }
-
-	</style>
-{% endblock %}
-{% block Javascript %}{% endblock %}
 {% block body %}
-	{% include  "commun/nav.html.twig" %}
-        <div class="scene">
-            <div class="slogan">🥶 Avec JC Habitat, passez de ça 👉 à ça 💧✨</div>
+<body class="d-flex flex-column min-vh-100">
 
-            <div class="cumulus old" id="oldCumulus">
-                <div class="support"></div>
-                <div class="led">62°</div>
-                <div class="vapeur noir"></div>
-                <div class="taches"></div>
-                <div class="label">ANCIEN CUMULUS</div>
-            </div>
+    <main class="flex-grow-1">
+        <!-- Hero -->
+        <section class="text-white text-center py-5 px-3" style="background-color: #004080;">
+            <img src="{{ asset('images/Logo-JCHabitat.JPG') }}" alt="JC Habitat" class="mb-4" height="120">
 
-            <div class="cumulus new" id="newCumulus">
-                <div class="support"></div>
-                <div class="led">72°</div>
-                <div class="leds"></div>
-                <div class="vapeur blanche"></div>
-                <div class="label">CUMULUS TOUT NEUF</div>
-            </div>
+            <h1 class="display-4 fw-bold mb-3">
+                JC Habitat – Spécialiste du remplacement de cumulus
+            </h1>
+            <p class="lead mb-4">
+                Intervention rapide, efficace et garantie sur vos chauffe-eaux.
+            </p>
+            <a href="#"
+                class="btn btn-light btn-lg fw-semibold shadow">
+                Demander un devis gratuit
+            </a>
+        </section>
 
-            <div class="camionnette" id="camionnette">
-                <div class="cabine"></div>
-                <div class="corps">
-                    <div class="logo">
-                        <img src="{{asset('images/Logo-JCHabitat.JPG')}}" alt="Logo" class="logo-img d-inline-block align-text-top">
+        <!-- Services -->
+        <section class="container py-5">
+            <div class="row text-center g-4">
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="h5 mb-3">🔧 Remplacement cumulus</h3>
+                            <p>Nous remplaçons rapidement vos chauffe-eaux défectueux par du matériel fiable et performant.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="roue roue1">
-                    <div class="rayons"></div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="h5 mb-3">⚡ Dépannage urgent</h3>
+                            <p>Intervention rapide en cas de panne d’eau chaude ou de problème électrique lié à votre cumulus.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="roue roue2">
-                    <div class="rayons"></div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="h5 mb-3">🛠️ Entretien</h3>
+                            <p>Prolongez la durée de vie de votre chauffe-eau grâce à un entretien régulier par nos experts.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <button class="mb-5" onclick="remplacerCumulus()">Remplacer le cumulus</button>
-        </div>
-	<script>
+        <!-- Image avant contact -->
+        <section class="text-center my-3">
+            <img src="{{ asset('images/YCPH6723.PNG') }}" alt="JC Habitat intervention" class="img-fluid rounded shadow" style="max-width: 500px;">
+        </section>
 
-        document.querySelectorAll(".roue").forEach(r => r.classList.add("rotate"));
+        <!-- Contact -->
+        <section class="bg-light text-center py-5">
+            <h2 class="h3 fw-bold mb-4">Besoin d’un devis rapide ?</h2>
+            <p class="mb-4">Contactez-nous dès maintenant, nos experts sont disponibles pour vous conseiller.</p>
+            <a href="#"
+                class="btn btn-primary btn-lg shadow">
+                📞 Demander un devis
+            </a>
+        </section>
+    </main>
 
-		function remplacerCumulus() {
-            const camion = document.getElementById("camionnette");
-            const roues = document.querySelectorAll(".roue");
-            const old = document.getElementById("oldCumulus");
-            const newCumulus = document.getElementById("newCumulus");
-
-            // Étape 1 : la camionnette arrive
-            camion.classList.add("active");
-            roues.forEach(r => r.classList.add("rotate"))
-
-            // Étape 2 : après 3s, elle "charge" le cumulus
-            setTimeout(() => {
-                old.classList.add("exit");
-            }, 3000);
-
-            // Étape 3 : le nouveau cumulus apparaît après 5s
-            setTimeout(() => {
-                newCumulus.classList.add("active");
-            }, 5000);
-
-            // Étape 4 : arrêt des roues (camionnette à l’arrêt)
-            setTimeout(() => {
-                roues.forEach(r => r.classList.remove("rotate"));
-            }, 5050);
-
-            setTimeout(() => {
-                demiTourCamionnette();
-            }, 7000);
-
-            // Étape 4 : la camionnette repart vers la gauche
-            setTimeout(() => {
-                departCamionnette(); // départ propre
-                roues.forEach(r => r.classList.add("rotate"));
-
-            }, 8000);
-        }
-
-        function demiTourCamionnette() {
-            const camion = document.getElementById("camionnette");
-            camion.classList.add("demiTour");
-        }
-
-        function departCamionnette() {
-            const camion = document.getElementById("camionnette");
-            camion.classList.remove("active");
-            camion.classList.add("exit");
-        }
-	</script>
-
+    <!-- Footer -->
+    {% include "commun/_footer.html.twig" %}
+</body>
 {% endblock %}
