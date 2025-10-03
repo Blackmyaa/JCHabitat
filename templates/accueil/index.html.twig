@@ -1,25 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}JC Habitat - Remplacement de Cumulus à partir de 799€{% endblock %}
+{% block stylesheets %}
+    <style>
+        .fade-in {
+            opacity: 0;
+            animation: fadeInAnimation 1.5s ease-in forwards;
+        }
 
+        @keyframes fadeInAnimation {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+{% endblock %}
 {% block body %}
 <body class="d-flex flex-column min-vh-100">
 
     <main class="flex-grow-1">
         <!-- Hero -->
         <section class="text-white text-center py-5 px-3" style="background-color: #004080;">
-            <img src="{{ asset('images/Logo-JCHabitat.JPG') }}" alt="JC Habitat" class="mb-4" height="120">
+            <img src="{{ asset('images/Logo-JCHabitat.JPG') }}" alt="JC Habitat" class="mb-4" height="120"  data-bs-toggle="modal" data-bs-target="#imageModal">
+            
+            <!-- Modal Bootstrap -->
+            <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content bg-transparent border-0">
+                        <img src="{{ asset('images/Logo-JCHabitat.JPG') }}" class="img-fluid rounded" alt="Cumulus en grand">
+                    </div>
+                </div>
+            </div>
 
             <h1 class="display-4 fw-bold mb-3">
-                JC Habitat – Spécialiste du remplacement de cumulus
+                JC Habitat & Services – Spécialiste du remplacement de cumulus
             </h1>
             <p class="lead mb-4">
                 Intervention rapide, efficace et garantie sur vos chauffe-eaux.
             </p>
-            <a href="#"
-                class="btn btn-light btn-lg fw-semibold shadow">
-                Demander un devis gratuit
-            </a>
         </section>
 
         <!-- Services -->
@@ -52,9 +73,18 @@
             </div>
         </section>
 
-        <!-- Image avant contact -->
+        <!-- Image avant contact sélectionnée aléatoirement-->
         <section class="text-center my-3">
-            <img src="{{ asset('images/YCPH6723.PNG') }}" alt="JC Habitat intervention" class="img-fluid rounded shadow" style="max-width: 500px;">
+            {% set images = [
+                'images/YCPH6723.PNG',
+                'images/Remplacement-cumulus.png',
+                'images/Remplacement-cumulus2.png',
+                'images/9B07FBBC-5AD9-4AF5-A93F-A187AA6CB998.PNG'
+            ] %}
+            {% set randomImage = random(images) %}
+
+
+            <img src="{{ asset(randomImage) }}" alt="JC Habitat intervention" class="img-fluid rounded shadow fade-in" style="max-width: 500px;">
         </section>
 
         <!-- Contact -->
@@ -62,8 +92,8 @@
             <h2 class="h3 fw-bold mb-4">Besoin d’un devis rapide ?</h2>
             <p class="mb-4">Contactez-nous dès maintenant, nos experts sont disponibles pour vous conseiller.</p>
             <a href="#"
-                class="btn btn-primary btn-lg shadow">
-                📞 Demander un devis
+                class="text-white text-center btn btn-lg fw-semibold shadow" style="background-color: #004080;">
+                📞 Demander un devis gratuit
             </a>
         </section>
     </main>

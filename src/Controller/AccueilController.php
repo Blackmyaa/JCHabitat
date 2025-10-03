@@ -12,7 +12,7 @@ final class AccueilController extends AbstractController
     public function index(): Response
     {
         return $this->render('accueil/index.html.twig', [
-            'page_title' => 'JC Habitat - Remplacement de cumulus',
+            'page_title' => 'JC Habitat & Services- Remplacement de cumulus',
             'meta_description' => 'JC Habitat, spécialiste du remplacement et dépannage de cumulus. Intervention rapide et garantie.'
         ]);
 
