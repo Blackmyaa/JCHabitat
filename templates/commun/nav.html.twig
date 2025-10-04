@@ -1,17 +1,28 @@
 <ul class="nav bg-dark border-bottom border-body" data-bs-theme="dark">
     <li class="nav-item text-light">
-		<img src="{{asset('images/Logo-JCHabitat.JPG')}}" alt="Logo" width="50" height="40" class="d-inline-block align-text-top">
+		<img src="{{asset('images/Logo-JCHabitat.JPG')}}" alt="Logo" width="50" height="40" class="d-inline-block align-text-top"  data-bs-toggle="modal" data-bs-target="#imageModal">
+		            
+            <!-- Modal Bootstrap -->
+            <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content bg-transparent border-0">
+                        <img src="{{ asset('images/Logo-JCHabitat.JPG') }}" class="img-fluid rounded" alt="JC Habitat">
+                    </div>
+                </div>
+            </div>
+
+
 	</li>
 	<li class="nav-item">
-		<a class="nav-link active" aria-current="page" href="#">Accueil</a>
+		<a class="nav-link" href="{{ path('app_accueil') }}">Accueil</a>
 	</li>
 	<li class="nav-item">
 		<a class="nav-link" href="#">Mes prestations</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="#">Contact</a>
+		<a class="nav-link" href="{{ path('site_contact') }}">Contact</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" aria-disabled="true">Demande de devis</a>
+		<a class="nav-link" href="">Demande de devis</a>
 	</li>
 </ul>

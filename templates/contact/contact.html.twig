@@ -3,8 +3,14 @@
 {% block title %}Contact - JC Habitat
 {% endblock %}
 
+{% block Javascript %}
+
+	
+{% endblock %}
+
 {% block body %}
 	<body class="d-flex flex-column min-vh-100">
+	{% include "commun/nav.html.twig" %}
 		<div class="container py-5">
 			<h1 class="mb-4">Contactez-nous</h1>
 
@@ -15,30 +21,184 @@
 			{{ form_start(form) }}
 			<div class="mb-3">
 				{{ form_label(form.nom) }}
-				{{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.nom, {'attr': {'class': 'form-control'}
+				})  }}
+				<span id="nom-error" class="text-danger" style="display:none;">Le nom ne peut contenir que des lettres et le tiret (-).</span>
 			</div>
+			<script>
+				document.addEventListener("DOMContentLoaded", function () {
+					const nomInput = document.getElementById("contact_nom");
+					const errorMsg = document.getElementById("nom-error");
+
+					if (nomInput) {
+						nomInput.addEventListener("input", function () {
+							const regex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]*$/;
+
+							if (!regex.test(nomInput.value)) {
+								// On efface le Caractere interdit
+								nomInput.value = nomInput.value.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ\s-]/g, '');
+								errorMsg.style.display = "block";
+								nomInput.classList.add("is-invalid");
+							} else {
+								errorMsg.style.display = "none";
+								nomInput.classList.remove("is-invalid");
+							}
+						});
+					}
+				});
+			</script>
 
 			<div class="mb-3">
 				{{ form_label(form.prenom) }}
 				{{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+				<span id="prenom-error" class="text-danger" style="display:none;">Le prénom ne peut contenir que des lettres et le tiret (-).</span>
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+						const nomInput = document.getElementById("contact_prenom");
+						const errorMsg = document.getElementById("prenom-error");
+
+						if (nomInput) {
+							nomInput.addEventListener("input", function () {
+								const regex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]*$/;
+
+								if (!regex.test(nomInput.value)) {
+									// On efface le Caractere interdit
+									nomInput.value = nomInput.value.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ\s-]/g, '');
+									errorMsg.style.display = "block";
+									nomInput.classList.add("is-invalid");
+								} else {
+									errorMsg.style.display = "none";
+									nomInput.classList.remove("is-invalid");
+								}
+							});
+						}
+					});
+				</script>
 			</div>
 
+			
 			<div class="mb-3">
 				{{ form_label(form.telephone) }}
-				{{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'maxlength': '10'}}) }}
+
+				<span id="tel-error" class="text-danger" style="display:none;">
+					Le numéro doit contenir exactement 10 chiffres.
+				</span>
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+						const telInput = document.getElementById("contact_telephone");
+						const errorMsg = document.getElementById("tel-error");
+
+						if (telInput) {
+							telInput.addEventListener("input", function () {
+								// Supprimer tous les caractères non numériques
+								telInput.value = telInput.value.replace(/[^0-9]/g, '');
+
+								// Vérifier la longueur
+								if (telInput.value.length > 10) {
+									telInput.value = telInput.value.slice(0, 10);
+								}
+
+								// Afficher message si ce n'est pas 10 chiffres (mais seulement après qu'il ait fini de taper)
+								if (telInput.value.length !== 10) {
+									errorMsg.style.display = "block";
+								} else {
+									errorMsg.style.display = "none";
+								}
+							});
+						}
+					});
+				</script>
 			</div>
+
+
 			<div class="mb-3">
 				{{ form_label(form.email) }}
 				{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+				<span id="email-error" class="text-danger" style="display:none;">
+					Veuillez entrer une adresse email valide (ex: exemple.nom@domaine.fr).
+				</span>
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+						const emailInput = document.getElementById("contact_email");
+						const errorMsg = document.getElementById("email-error");
+
+						if (emailInput) {
+							emailInput.addEventListener("input", function () {
+								const regex = /^[a-z0-9][a-z0-9.-]*@[a-z0-9.-]+\.[a-z]{2,}$/;
+								const value = emailInput.value.toLowerCase();
+
+								if (!regex.test(value)) {
+									errorMsg.style.display = "block";
+									emailInput.classList.add("is-invalid");
+								} else {
+									errorMsg.style.display = "none";
+									emailInput.classList.remove("is-invalid");
+								}
+							});
+						}
+					});
+				</script>
 			</div>
+
+
 			<div class="mb-3">
 				{{ form_label(form.message) }}
 				{{ form_widget(form.message, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+				<small id="message-counter" class="text-muted">0 / 1000 caractères</small>
+				<span id="message-error" class="text-danger" style="display:none;">
+					Pas plus de 3 caractères/mots/nombres identiques à la suite ni de collages répétitifs.
+				</span>
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+						const messageInput = document.getElementById("contact_message");
+						const counter = document.getElementById("message-counter");
+						const errorMsg = document.getElementById("message-error");
+
+						if (messageInput && counter) {
+							messageInput.addEventListener("input", function () {
+								const maxLength = 1000;
+								let value = messageInput.value;
+
+								let cleaned = value;
+
+								// 🔹 Limite les répétitions de +3 fois le même caractère
+								cleaned = cleaned.replace(/(.)\1{3,}/g, '$1$1$1');
+
+								// 🔹 Supprime les répétitions successives de mots
+								cleaned = cleaned.replace(/\b(\w+)(\s+\1)+\b/gi, '$1 $1 $1');
+
+								// 🔹 Supprime les répétitions successives de blocs numériques avec espaces
+								cleaned = cleaned.replace(/\b(\d+)(\s+\1{3,})+\b/g, '$1 $1 $1');
+
+								// 🔹 Supprime les répétitions directes de séquences numériques sans espace
+								cleaned = cleaned.replace(/(\d{2,})(\1{3,})/g, '$1$1$1');
+
+								if (value !== cleaned) {
+									messageInput.value = cleaned;
+									errorMsg.style.display = "block";
+									setTimeout(() => errorMsg.style.display = "none", 5000);
+								}
+
+								const currentLength = messageInput.value.length;
+								counter.textContent = currentLength + " / " + maxLength + " caractères";
+
+								if (currentLength >= maxLength) {
+									counter.classList.add("text-danger");
+								} else {
+									counter.classList.remove("text-danger");
+								}
+							});
+						}
+					});
+				</script>
 			</div>
+
+			
 			<button class="btn btn-primary">Envoyer</button>
 			{{ form_end(form) }}
-            <a class="py-3" href="{{ path('app_accueil')}}"><button class="btn btn-dark">Retour à l'accueil</button></a>
 		</div>
+            <a class="py-3 text-center" href="{{ path('app_accueil')}}"><button class="btn btn-dark">Retour à l'accueil</button></a>
 		{% include "commun/_footer.html.twig" %}
 	</body>
 {% endblock %}
