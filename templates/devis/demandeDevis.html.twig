@@ -1,0 +1,262 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Demande de devis
+{% endblock %}
+
+{% block body %}
+	<body class="d-flex flex-column min-vh-100">
+		{% include "commun/nav.html.twig" %}
+		<div class="container py-5">
+			<h1 class="mb-4">Demande de devis</h1>
+			{{ form_start(form) }}
+
+
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">{{ message }}</div>
+			{% endfor %}
+
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					{{ form_label(form.nom) }}
+					{{ form_widget(form.nom, {'attr': {'class': 'form-control'} })}}
+                    <span id="nom-error" class="text-danger" style="display:none;">Le nom ne peut contenir que des lettres et le tiret (-).</span>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const nomInput = document.getElementById("devis_nom");
+                            const errorMsg = document.getElementById("nom-error");
+
+                            if (nomInput) {
+                                nomInput.addEventListener("input", function () {
+                                    const regex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]*$/;
+
+                                    if (!regex.test(nomInput.value)) {
+                                        // On efface le Caractere interdit
+                                        nomInput.value = nomInput.value.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ\s-]/g, '');
+                                        errorMsg.style.display = "block";
+                                        nomInput.classList.add("is-invalid");
+                                    } else {
+                                        errorMsg.style.display = "none";
+                                        nomInput.classList.remove("is-invalid");
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.prenom) }}
+                    {{ form_widget(form.prenom, {'attr': {'class': 'form-control'} } )}}
+                    <span id="prenom-error" class="text-danger" style="display:none;">Le prénom ne peut contenir que des lettres et le tiret (-).</span>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const nomInput = document.getElementById("devis_prenom");
+                            const errorMsg = document.getElementById("prenom-error");
+
+                            if (nomInput) {
+                                nomInput.addEventListener("input", function () {
+                                    const regex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]*$/;
+
+                                    if (!regex.test(nomInput.value)) {
+                                        // On efface le Caractere interdit
+                                        nomInput.value = nomInput.value.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ\s-]/g, '');
+                                        errorMsg.style.display = "block";
+                                        nomInput.classList.add("is-invalid");
+                                    } else {
+                                        errorMsg.style.display = "none";
+                                        nomInput.classList.remove("is-invalid");
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.telephone) }}
+                    {{ form_widget(form.telephone, {'attr': {'class': 'form-control'} } )}}
+                    <span id="tel-error" class="text-danger" style="display:none;">
+                        Le numéro doit contenir exactement 10 chiffres.
+                    </span>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const telInput = document.getElementById("devis_telephone");
+                            const errorMsg = document.getElementById("tel-error");
+
+                            if (telInput) {
+                                telInput.addEventListener("input", function () {
+                                    // Supprimer tous les caractères non numériques
+                                    telInput.value = telInput.value.replace(/[^0-9]/g, '');
+
+                                    // Vérifier la longueur
+                                    if (telInput.value.length > 10) {
+                                        telInput.value = telInput.value.slice(0, 10);
+                                    }
+
+                                    // Afficher message si ce n'est pas 10 chiffres (mais seulement après qu'il ait fini de taper)
+                                    if (telInput.value.length !== 10) {
+                                        errorMsg.style.display = "block";
+                                    } else {
+                                        errorMsg.style.display = "none";
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+                </div>
+
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'} } )}}
+                    <span id="email-error" class="text-danger" style="display:none;">
+					Veuillez entrer une adresse email valide (ex: exemple.nom@domaine.fr).
+                    </span>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const emailInput = document.getElementById("devis_email");
+                            const errorMsg = document.getElementById("email-error");
+
+                            if (emailInput) {
+                                emailInput.addEventListener("input", function () {
+                                    const regex = /^[a-z0-9][a-z0-9.-]*@[a-z0-9.-]+\.[a-z]{2,}$/;
+                                    const value = emailInput.value.toLowerCase();
+
+                                    if (!regex.test(value)) {
+                                        errorMsg.style.display = "block";
+                                        emailInput.classList.add("is-invalid");
+                                    } else {
+                                        errorMsg.style.display = "none";
+                                        emailInput.classList.remove("is-invalid");
+                                    }
+                                });
+                            }
+                        });
+                    </script>
+
+                </div>
+
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.pays) }}
+                    {{ form_widget(form.pays, {'attr': {'class': 'form-control'} } )}}
+                </div>
+
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.ville) }}
+                    {{ form_widget(form.ville, {'attr': {'class': 'form-control'} } )}}
+                    <ul id="ville-suggestions" class="list-group position-absolute w-100" style="z-index:1000; display:none;"></ul>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            const input = document.getElementById('devis_ville');
+                            const suggestions = document.getElementById('ville-suggestions');
+
+                            let timeout;
+
+                            input.addEventListener('input', () => {
+                                clearTimeout(timeout);
+                                const query = input.value.trim();
+
+                                if (query.length < 2) {
+                                    suggestions.style.display = 'none';
+                                    return;
+                                }
+
+                                timeout = setTimeout(() => {
+                                    let url = '';
+
+                                    // 🔍 Si on tape des chiffres → recherche par code postal
+                                    if (/^\d+$/.test(query)) {
+                                        url = `https://geo.api.gouv.fr/communes?codePostal=${query}&fields=nom,codesPostaux&boost=population&limit=10`;
+                                    } 
+                                    // 🔤 Sinon → recherche par nom de ville
+                                    else {
+                                        url = `https://geo.api.gouv.fr/communes?nom=${query}&fields=nom,codesPostaux&boost=population&limit=10`;
+                                    }
+
+                                    fetch(url)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            suggestions.innerHTML = '';
+                                            if (data.length === 0) {
+                                                suggestions.style.display = 'none';
+                                                return;
+                                            }
+
+                                            data.forEach(city => {
+                                                // 🔸 Pour chaque code postal de la ville, on crée un item séparé
+                                                city.codesPostaux.forEach(codePostal => {
+                                                    const item = document.createElement('li');
+                                                    item.textContent = `${city.nom} (${codePostal})`;
+                                                    item.classList.add('list-group-item', 'list-group-item-action');
+                                                    item.addEventListener('click', () => {
+                                                        input.value = `${city.nom} (${codePostal})`;
+                                                        suggestions.style.display = 'none';
+                                                    });
+                                                    suggestions.appendChild(item);
+                                                });
+                                            });
+
+                                            suggestions.style.display = 'block';
+                                        })
+                                        .catch(err => console.error(err));
+                                }, 300);
+                            });
+
+                            // Masquer la liste quand on clique ailleurs
+                            document.addEventListener('click', (e) => {
+                                if (!suggestions.contains(e.target) && e.target !== input) {
+                                    suggestions.style.display = 'none';
+                                }
+                            });
+                        });
+                    </script>
+
+
+                </div>
+                
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.type_intervention) }}
+                    {{ form_widget(form.type_intervention, {'attr': {'class': 'form-control'} } )}}
+                </div>
+
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.capacite) }}
+                    {{ form_widget(form.capacite, {'attr': {'class': 'form-control'} } )}}
+                </div>
+
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.position) }}
+                    {{ form_widget(form.position, {'attr': {'class': 'form-control'} } )}}
+                </div>
+
+				<div class="col-md-6 mb-3">
+                    {{ form_label(form.accessibilite) }}
+                    {{ form_widget(form.accessibilite, {'attr': {'class': 'form-control'} } )}}
+                </div>
+
+				<div class="col-12 mb-3">
+                    {{ form_label(form.ancien_modele) }}
+                    {{ form_widget(form.ancien_modele, {'attr': {'class': 'form-control'} } )}}
+                </div>
+
+				<div class="col-12 mb-3">
+                    {{ form_label(form.photos) }}
+                    {{ form_widget(form.photos, {'attr': {'class': 'form-control'} } )}}
+                </div>
+
+				<div class="col-12 mb-3">
+                    {{ form_label(form.message) }}
+                    {{ form_widget(form.message, {'attr': {'class': 'form-control'} } )}}
+                </div>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Demander votre devis</button>
+			{{ form_end(form) }}
+
+		</div>
+
+		<a class="py-3 text-center" href="{{ path('app_accueil')}}">
+			<button class="btn btn-dark">Retour à l'accueil</button>
+		</a>
+		{% include "commun/_footer.html.twig" %}
+	</body>
+{% endblock %}

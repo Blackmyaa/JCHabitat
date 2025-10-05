@@ -24,29 +24,29 @@
 				{{ form_widget(form.nom, {'attr': {'class': 'form-control'}
 				})  }}
 				<span id="nom-error" class="text-danger" style="display:none;">Le nom ne peut contenir que des lettres et le tiret (-).</span>
+				<script>
+					document.addEventListener("DOMContentLoaded", function () {
+						const nomInput = document.getElementById("contact_nom");
+						const errorMsg = document.getElementById("nom-error");
+
+						if (nomInput) {
+							nomInput.addEventListener("input", function () {
+								const regex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]*$/;
+
+								if (!regex.test(nomInput.value)) {
+									// On efface le Caractere interdit
+									nomInput.value = nomInput.value.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ\s-]/g, '');
+									errorMsg.style.display = "block";
+									nomInput.classList.add("is-invalid");
+								} else {
+									errorMsg.style.display = "none";
+									nomInput.classList.remove("is-invalid");
+								}
+							});
+						}
+					});
+				</script>
 			</div>
-			<script>
-				document.addEventListener("DOMContentLoaded", function () {
-					const nomInput = document.getElementById("contact_nom");
-					const errorMsg = document.getElementById("nom-error");
-
-					if (nomInput) {
-						nomInput.addEventListener("input", function () {
-							const regex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s-]*$/;
-
-							if (!regex.test(nomInput.value)) {
-								// On efface le Caractere interdit
-								nomInput.value = nomInput.value.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿ\s-]/g, '');
-								errorMsg.style.display = "block";
-								nomInput.classList.add("is-invalid");
-							} else {
-								errorMsg.style.display = "none";
-								nomInput.classList.remove("is-invalid");
-							}
-						});
-					}
-				});
-			</script>
 
 			<div class="mb-3">
 				{{ form_label(form.prenom) }}
@@ -76,6 +76,10 @@
 				</script>
 			</div>
 
+			<div class="mb-3">
+				{{ form_label(form.pays) }}
+				{{ form_widget(form.pays, {'attr': {'class': 'form-control'}}) }}
+			</div>
 			
 			<div class="mb-3">
 				{{ form_label(form.telephone) }}
@@ -125,6 +129,7 @@
 
 						if (emailInput) {
 							emailInput.addEventListener("input", function () {
+
 								const regex = /^[a-z0-9][a-z0-9.-]*@[a-z0-9.-]+\.[a-z]{2,}$/;
 								const value = emailInput.value.toLowerCase();
 

@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ContactType extends AbstractType
@@ -25,6 +26,15 @@ class ContactType extends AbstractType
                 'label' => 'Prenom',
             ])
 
+            ->add('pays', ChoiceType::class, [
+                'choices'  => [
+                    'France (+33)' => 'france',
+                    'Belgique(+32)' => 'belgique',
+                ],
+                'placeholder' => '--Sélectionnez votre pays--', // ✅ valeur par défaut affichée
+                'label' => 'Lieu de résidence',
+                'required' => true,
+            ])
 
             ->add('email', EmailType::class, [
                 'label' => 'Email',
