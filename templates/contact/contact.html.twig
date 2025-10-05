@@ -129,9 +129,14 @@
 
 						if (emailInput) {
 							emailInput.addEventListener("input", function () {
+								let value = emailInput.value.toLowerCase();
 
+								// 🔹 Étape 1 : on supprime automatiquement les caractères interdits
+								// Autorisés : lettres non accentuées, chiffres, ., -, @
+								value = value.replace(/[^a-z0-9.@-]/g, '');
+
+								// 🔹 Étape 2 : on valide le format global de l'email
 								const regex = /^[a-z0-9][a-z0-9.-]*@[a-z0-9.-]+\.[a-z]{2,}$/;
-								const value = emailInput.value.toLowerCase();
 
 								if (!regex.test(value)) {
 									errorMsg.style.display = "block";
@@ -140,10 +145,14 @@
 									errorMsg.style.display = "none";
 									emailInput.classList.remove("is-invalid");
 								}
+
+								// 🔹 Étape 3 : on remet la valeur nettoyée dans le champ
+								emailInput.value = value;
 							});
 						}
 					});
 				</script>
+
 			</div>
 
 
