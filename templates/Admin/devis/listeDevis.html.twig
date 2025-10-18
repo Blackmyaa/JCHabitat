@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Devis{% endblock %}
+
+{% block body %}
+{% include "Admin/commun/_menu.html.twig" %}
+<div class="container mt-5">
+    <h1 class="mb-4">Liste des Devis</h1>
+
+    <!-- 🔍 Filtres -->
+    <div class="card p-3 mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-4">
+                <input type="text" id="search" class="form-control" placeholder="Rechercher un client ou un numéro de devis...">
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-check form-check-inline">
+                    <input class="form-check-input statut-filter" type="checkbox" value="nouveau"> Nouveau
+                </label>
+                <label class="form-check form-check-inline">
+                    <input class="form-check-input statut-filter" type="checkbox" value="en_cours"> En cours
+                </label>
+                <label class="form-check form-check-inline">
+                    <input class="form-check-input statut-filter" type="checkbox" value="validé"> Validé
+                </label>
+
+                <!-- Bouton pour tout décocher -->
+                <button class="btn btn-outline-secondary btn-sm ms-2" id="clearFilters">
+                    X
+                </button>
+            </div>
+
+            <div class="col-md-4">
+                <select id="sort" class="form-select">
+                    <option value="date_desc">Trier par date (récents)</option>
+                    <option value="date_asc">Trier par date (anciens)</option>
+                    <option value="montant_desc">Trier par montant (décroissant)</option>
+                    <option value="montant_asc">Trier par montant (croissant)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🧮 Tableau -->
+    <table class="table table-striped" id="devisTable">
+        <thead class="table-dark">
+            <tr>
+                <th>Numéro</th>
+                <th>Client</th>
+                <th>Statut</th>
+                <th>Date de création</th>
+                <th>Montant</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% include 'Admin/commun/devis/_table.html.twig' with { devis: devis } %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const checkboxes = document.querySelectorAll('.statut-filter');
+    const searchInput = document.querySelector('#search');
+    const sortSelect = document.querySelector('#sort');
+    const tableBody = document.querySelector('#devisTable tbody');
+    const resetButton = document.querySelector('#clearFilters');
+
+    function fetchDevis() {
+        const checked = Array.from(checkboxes).find(cb => cb.checked);
+        const statuts = checked ? [checked.value] : [];
+        const search = searchInput ? searchInput.value : '';
+        const sort = sortSelect && sortSelect.value ? sortSelect.value : 'date_desc';
+
+        console.log('fetchDevis payload', { statuts, search, sort });
+
+        fetch('{{ path("admin_devis_filter") }}', {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                'statuts[]': statuts,
+                search,
+                sort
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            tableBody.innerHTML = data.html;
+        })
+        .catch(err => {
+            console.error('Erreur fetch devis:', err);
+        });
+    }
+
+    // ✅ Une seule case cochée à la fois
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            if (cb.checked) {
+                checkboxes.forEach(other => {
+                    if (other !== cb) other.checked = false;
+                });
+            }
+            fetchDevis();
+        });
+    });
+
+    // 🔄 Bouton tout décocher
+    resetButton.addEventListener('click', () => {
+        checkboxes.forEach(cb => cb.checked = false);
+        if (searchInput) searchInput.value = '';
+        if (sortSelect) sortSelect.value = '';
+        fetchDevis();
+    });
+
+    // 🔍 Recherche avec petit délai
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchInput._timer);
+            searchInput._timer = setTimeout(fetchDevis, 400);
+        });
+    }
+
+    // ⬇️ Tri
+    if (sortSelect) {
+        sortSelect.addEventListener('change', fetchDevis);
+    }
+});
+</script>
+{% endblock %}

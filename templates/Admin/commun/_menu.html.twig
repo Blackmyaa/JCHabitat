@@ -8,11 +8,15 @@
         {# Menu principal #}
         <div class="collapse navbar-collapse" id="adminNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item text-light">
+                        <img src="{{asset('images/Logo-JCHabitat.JPG')}}" alt="Logo" width="50" height="40" class="d-inline-block align-text-top"  data-bs-toggle="modal" data-bs-target="#imageModal">
+                    </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('admin_dashboard') }}">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link position-relative" href="{# {{ path('admin_devis_list') }} #}">
+                    <a class="nav-link position-relative" href=" {{ path('admin_devis_index') }}">
                         Devis
                         {% if newDevisCount is defined and newDevisCount > 0 %}
                             <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">

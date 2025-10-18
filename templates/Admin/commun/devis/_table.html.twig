@@ -1,0 +1,23 @@
+{% for d in devis %}
+<tr>
+    <td>{{ d.numeroDevis }}</td>
+    <td>{{ d.client.nom }} {{ d.client.prenom }}</td>
+    <td>
+        {% if d.statut == 'nouveau' %}
+            <span class="badge bg-primary">Nouveau</span>
+        {% elseif d.statut == 'en_cours' %}
+            <span class="badge bg-warning text-dark">En cours</span>
+        {% elseif d.statut == 'validé' %}
+            <span class="badge bg-success">Validé</span>
+        {% else %}
+            <span class="badge bg-danger">{{ d.statut }}</span>
+        {% endif %}
+    </td>
+    <td>{{ d.dateCreation|date('d/m/Y') }}</td>
+    <td>{{ d.montantTotal }} €</td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="5" class="text-center text-muted">Aucun devis trouvé pour ces statuts.</td>
+</tr>
+{% endfor %}
