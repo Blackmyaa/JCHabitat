@@ -4,6 +4,9 @@
 
 {% block body %}
 {% include "Admin/commun/_menu.html.twig" %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
 <div class="container my-5">
     <h1 class="text-center mb-4">Tableau de bord administrateur</h1>
 

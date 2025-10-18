@@ -1,0 +1,11 @@
+    {% for client in clients %}
+        <tr>
+            <td>{{ client.nom }}</td>
+            <td>{{ client.prenom }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.telephone }}</td>
+            <td>{{ client.ville }}</td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5" class="text-center text-muted">Aucun client trouvé.</td></tr>
+    {% endfor %}

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un nouvel administrateur{% endblock %}
+
+{% block body %}
+{% include "Admin/commun/_menu.html.twig" %}
+<div class="container mt-5">
+    <h1 class="mb-4">Créer un nouvel administrateur</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    <div class="col-md-8 mx-auto p-4 shadow-sm">
+        {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.nom) }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'form-control'} } )}}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form_label(form.prenom) }}
+                    {{ form_widget(form.prenom, {'attr': {'class': 'form-control'} } )}}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'} } )}}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.motDePasse) }}
+                {{ form_widget(form.motDePasse, {'attr': {'class': 'form-control'} } )}}
+            </div>
+            <div class="col-2 mx-auto">
+                <button type="submit" class="btn btn-primary w-100">Créer l’administrateur</button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

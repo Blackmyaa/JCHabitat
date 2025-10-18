@@ -137,4 +137,24 @@ class Administrateur implements UserInterface, PasswordAuthenticatedUserInterfac
         }
         return $this;
     }
+
+    /**
+     * Get the value of motDePasse
+     */ 
+    public function getMotDePasse()
+    {
+        return $this->motDePasse;
+    }
+
+    /**
+     * Set the value of motDePasse
+     *
+     * @return  self
+     */ 
+    public function setMotDePasse($motDePasse)
+    {
+        $this->motDePasse = $motDePasse;
+
+        return $this;
+    }
 }

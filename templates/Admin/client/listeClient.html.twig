@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des clients{% endblock %}
+
+{% block body %}
+{% include "Admin/commun/_menu.html.twig" %}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Liste des clients</h1>
+
+    <!-- Recherche -->
+    <div class="mb-3 col-md-4">
+        <input type="text" id="search" class="form-control" placeholder="Rechercher un client..." value="{{ search }}">
+    </div>
+
+    <!-- Tableau -->
+    <table class="table table-striped" id="clientsTable">
+        <thead class="table-dark">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Ville</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% include "Admin/commun/client/_tableClient.html.twig" %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.querySelector('#search');
+    const tableBody = document.querySelector('#clientsTable tbody');
+
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', () => {
+        clearTimeout(searchInput._timer);
+        searchInput._timer = setTimeout(() => {
+            const search = searchInput.value;
+
+            // Rechargement simple via GET avec query param
+            const url = new URL(window.location.href);
+            url.searchParams.set('search', search);
+            window.location.href = url;
+        }, 300);
+    });
+});
+</script>
+{% endblock %}
