@@ -22,4 +22,39 @@ class DevisRepository extends ServiceEntityRepository
     }
 
     // Ajoutez ici vos méthodes personnalisées si nécessaire
+
+    //Trouvé les devis nouveau et en cours
+    public function findActiveDevis(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.statut IN (:statuts)')
+            ->setParameter('statuts', ['nouveau', 'en_cours'])
+            ->orderBy('d.dateCreation', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    //afficher uniquement les nouveaux devis
+    public function findNewDevis(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.statut IN (:statuts)')
+            ->setParameter('statuts', 'nouveau')
+            ->orderBy('d.dateCreation', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    //afficher les devis annulés
+    public function findCanceledDevis(): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.statut IN (:statuts)')
+            ->setParameter('statuts', 'annulé')
+            ->orderBy('d.dateCreation', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+    }
 }

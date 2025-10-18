@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container-fluid">
+        {# Bouton toggle pour mobile #}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        {# Menu principal #}
+        <div class="collapse navbar-collapse" id="adminNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('admin_dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link position-relative" href="{# {{ path('admin_devis_list') }} #}">
+                        Devis
+                        {% if newDevisCount is defined and newDevisCount > 0 %}
+                            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                                {{ newDevisCount }}
+                                <span class="visually-hidden">nouveaux devis</span>
+                            </span>
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{# {{ path('admin_clients_list') }} #}">Clients</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{# {{ path('admin_products_list') }} #}">Prestations</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{# {{ path('admin_add') }} #}">Ajouter Admin</a>
+                </li>
+
+            </ul>
+
+            {# Section utilisateur et déconnexion #}
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if app.user %}
+                    <li class="nav-item">
+                        <span class="navbar-text me-3">
+                            Bonjour, {{ app.user.prenom }}
+                        </span>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="{{ path('app_logout') }}">Déconnexion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

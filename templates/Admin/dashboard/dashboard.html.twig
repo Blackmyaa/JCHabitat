@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord administrateur{% endblock %}
+
+{% block body %}
+{% include "Admin/commun/_menu.html.twig" %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Tableau de bord administrateur</h1>
+
+    {# === Statistiques === #}
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-0 text-center bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Total des devis</h5>
+                    <h2 class="fw-bold">{{ devis|length }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-0 text-center bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Devis en attente</h5>
+                    <h2 class="fw-bold text-warning">
+                        {{ devis|filter(d => d.statut == 'en_cours')|length }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm border-0 text-center bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Montant total estimé</h5>
+                    <h2 class="fw-bold text-success">
+                        {{ devis|reduce((carry, d) => carry + d.montantTotal, 0) }} €
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# === Tableau des devis === #}
+    {% if devis is not empty %}
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-file-earmark-text"></i> Liste des devis</span>
+                <a href="" class="btn btn-sm btn-light">🔄 Actualiser</a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-hover table-striped mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Client</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                            <th>Montant (€)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for d in devis %}
+                            <tr>
+                                <td>{{ d.numeroDevis }}</td>
+                                <td>{{ d.client.nom }} {{ d.client.prenom }}</td>
+                                <td>{{ d.dateCreation|date('d/m/Y H:i') }}</td>
+                                <td>
+                                    {% if d.statut == 'En attente' %}
+                                        <span class="badge bg-warning text-dark">{{ d.statut }}</span>
+                                    {% elseif d.statut == 'Validé' %}
+                                        <span class="badge bg-success">{{ d.statut }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ d.statut }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ d.montantTotal|number_format(2, ',', ' ') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center shadow-sm mt-5">
+            <i class="bi bi-info-circle"></i>
+            Aucun devis n’a encore été enregistré.  
+            <br>Les nouveaux devis des clients apparaîtront ici dès qu’ils seront créés.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

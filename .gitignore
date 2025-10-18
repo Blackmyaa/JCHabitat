@@ -2,6 +2,7 @@
 /.env.dev
 /.env.test
 /.env.*.local
+/.htaccess
 
 # Cache, logs et sessions
 /var/

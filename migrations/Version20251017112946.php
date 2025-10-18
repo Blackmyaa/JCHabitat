@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20251005193159 extends AbstractMigration
+final class Version20251017112946 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,10 +20,10 @@ final class Version20251005193159 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE administrateur (id INT AUTO_INCREMENT NOT NULL, identifiant VARCHAR(100) NOT NULL, mot_de_passe VARCHAR(255) NOT NULL, nom VARCHAR(100) NOT NULL, prenom VARCHAR(100) NOT NULL, UNIQUE INDEX UNIQ_32EB52E8C90409EC (identifiant), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE administrateur (id INT AUTO_INCREMENT NOT NULL, email VARCHAR(180) NOT NULL, mot_de_passe VARCHAR(255) NOT NULL, roles JSON NOT NULL, nom VARCHAR(100) NOT NULL, prenom VARCHAR(100) NOT NULL, UNIQUE INDEX UNIQ_32EB52E8E7927C74 (email), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ballon (id INT AUTO_INCREMENT NOT NULL, marque VARCHAR(100) NOT NULL, modele VARCHAR(100) NOT NULL, capacite_litres INT NOT NULL, type_energie VARCHAR(50) NOT NULL, prix_ht NUMERIC(10, 2) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE client (id INT AUTO_INCREMENT NOT NULL, nom VARCHAR(100) NOT NULL, prenom VARCHAR(100) NOT NULL, adresse VARCHAR(255) NOT NULL, code_postal VARCHAR(10) NOT NULL, ville VARCHAR(100) NOT NULL, telephone VARCHAR(20) NOT NULL, email VARCHAR(150) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE devis (id INT AUTO_INCREMENT NOT NULL, client_id INT NOT NULL, administrateur_id INT NOT NULL, numero_devis VARCHAR(50) NOT NULL, date_creation DATETIME NOT NULL, statut VARCHAR(20) NOT NULL, montant_total NUMERIC(10, 2) NOT NULL, UNIQUE INDEX UNIQ_8B27C52B2478EE16 (numero_devis), INDEX IDX_8B27C52B19EB6921 (client_id), INDEX IDX_8B27C52B7EE5403C (administrateur_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE devis (id INT AUTO_INCREMENT NOT NULL, client_id INT NOT NULL, administrateur_id INT NOT NULL, numero_devis VARCHAR(50) NOT NULL, date_creation DATETIME NOT NULL, statut VARCHAR(20) NOT NULL, montant_total NUMERIC(10, 2) NOT NULL, is_read TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_8B27C52B2478EE16 (numero_devis), INDEX IDX_8B27C52B19EB6921 (client_id), INDEX IDX_8B27C52B7EE5403C (administrateur_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE devis_ballon (id INT AUTO_INCREMENT NOT NULL, devis_id INT NOT NULL, ballon_id INT NOT NULL, quantite INT NOT NULL, prix_ballon NUMERIC(10, 2) NOT NULL, INDEX IDX_14EBD70B41DEFADA (devis_id), INDEX IDX_14EBD70BE2668897 (ballon_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE devis_prestation (id INT AUTO_INCREMENT NOT NULL, devis_id INT NOT NULL, prestation_id INT NOT NULL, quantite INT NOT NULL, prix_prestation NUMERIC(10, 2) NOT NULL, INDEX IDX_E169C44541DEFADA (devis_id), INDEX IDX_E169C4459E45C554 (prestation_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE prestation (id INT AUTO_INCREMENT NOT NULL, libelle VARCHAR(150) NOT NULL, description LONGTEXT DEFAULT NULL, prix_ht NUMERIC(10, 2) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
