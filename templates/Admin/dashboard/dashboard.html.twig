@@ -67,12 +67,14 @@
                                 <td>{{ d.client.nom }} {{ d.client.prenom }}</td>
                                 <td>{{ d.dateCreation|date('d/m/Y H:i') }}</td>
                                 <td>
-                                    {% if d.statut == 'En attente' %}
+                                    {% if d.statut == 'en_cours' %}
                                         <span class="badge bg-warning text-dark">{{ d.statut }}</span>
-                                    {% elseif d.statut == 'Validé' %}
+                                    {% elseif d.statut == 'validé' %}
                                         <span class="badge bg-success">{{ d.statut }}</span>
+                                    {% elseif d.statut == 'nouveau' %}
+                                        <span class="badge bg-primary">{{ d.statut }}</span>
                                     {% else %}
-                                        <span class="badge bg-secondary">{{ d.statut }}</span>
+                                        <span class="badge bg-danger">{{ d.statut }}</span>
                                     {% endif %}
                                 </td>
                                 <td>{{ d.montantTotal|number_format(2, ',', ' ') }}</td>

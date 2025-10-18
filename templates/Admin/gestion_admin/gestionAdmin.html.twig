@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des administrateurs{% endblock %}
+
+{% block body %}
+{% include "Admin/commun/_menu.html.twig" %}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Liste des administrateurs</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    <a href="{{ path('admin_administrateur_new') }}" class="btn btn-primary mb-3">➕ Ajouter admin</a>
+
+    <table class="table table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Rôles</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for admin in administrateurs %}
+            <tr>
+                <td>{{ admin.id }}</td>
+                <td>{{ admin.nom }}</td>
+                <td>{{ admin.prenom }}</td>
+                <td>{{ admin.email }}</td>
+                <td>{{ admin.roles|join(', ') }}</td>
+                <td>
+                    <a href="{{ path('admin_administrateur_edit', {id: admin.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                    <form method="post" action="{{ path('admin_administrateur_delete', {id: admin.id}) }}" style="display:inline-block;" onsubmit="return confirm('Supprimer cet administrateur ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ admin.id) }}">
+                        <button class="btn btn-sm btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="text-center">Aucun administrateur trouvé.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -17,9 +17,9 @@ class DashboardController extends AbstractController
         // Vérifie que l'utilisateur est connecté et est admin
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        // Récupère les 5 derniers devis
+        // Récupère les 20 derniers devis actifs (nouveau et en cours)
         $devisRepo = $em->getRepository(Devis::class);
-        $dernierDevis = $devisRepo->findActiveDevis([], ['dateCreation' => 'DESC'],15);
+        $dernierDevis = $devisRepo->findActiveDevis([], ['dateCreation' => 'DESC'],20);
 
         return $this->render('Admin/dashboard/dashboard.html.twig', [
             'devis' => $dernierDevis,

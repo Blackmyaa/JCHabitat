@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un administrateur{% endblock %}
+
+{% block body %}
+{% include "Admin/commun/_menu.html.twig" %}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Modifier l’administrateur</h1>
+
+    <div class="card p-4 shadow-sm">
+        {{ form_start(form) }}
+            {{ form_label(form.nom) }}
+            {{ form_widget(form.nom, {'attr': {'class': 'form-control'} } )}}
+
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'} } )}}
+
+            {{ form_label(form.motDePasse) }}
+            {{ form_widget(form.motDePasse, {'attr': {'class': 'form-control'} } )}}
+            <button class="btn btn-success mt-3" type="submit">Mettre à jour</button>
+            <a href="{{ path('admin_dashboard') }}"><button class="btn btn-secondary ms-2 mt-3">Annuler</button></a>
+        {{form_end(form)}}
+    </div>
+</div>
+{% endblock %}
