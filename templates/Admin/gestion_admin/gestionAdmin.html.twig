@@ -29,8 +29,8 @@
         {% for admin in administrateurs %}
             <tr>
                 <td>{{ admin.id }}</td>
-                <td>{{ admin.nom }}</td>
-                <td>{{ admin.prenom }}</td>
+                <td>{{ admin.nom|capitalize }}</td>
+                <td>{{ admin.prenom|capitalize }}</td>
                 <td>{{ admin.email }}</td>
                 <td>{{ admin.roles|join(', ') }}</td>
                 <td>

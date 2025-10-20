@@ -14,8 +14,8 @@
 				<div class="row">
 					<div class="col-6">
                         <h5 class="card-title">Nom Complet:
-                            {{ demande.nom }}
-                            {{ demande.prenom }}</h5>
+                            {{ demande.nom|capitalize }}
+                            {{ demande.prenom|capitalize }}</h5>
                         <p class="card-text">
                             <strong>Email :</strong>
                             {{ demande.email }}</p>

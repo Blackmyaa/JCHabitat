@@ -1,7 +1,7 @@
     {% for client in clients %}
         <tr>
-            <td>{{ client.nom }}</td>
-            <td>{{ client.prenom }}</td>
+            <td>{{ client.nom|capitalize }}</td>
+            <td>{{ client.prenom|capitalize }}</td>
             <td>{{ client.email }}</td>
             <td>{{ client.telephone }}</td>
             <td>{{ client.ville }}</td>

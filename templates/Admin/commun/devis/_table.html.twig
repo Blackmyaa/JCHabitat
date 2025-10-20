@@ -1,7 +1,7 @@
 {% for d in devis %}
 <tr>
     <td>{{ d.numeroDevis }}</td>
-    <td>{{ d.client.nom }} {{ d.client.prenom }}</td>
+    <td>{{ d.client.nom|capitalize }} {{ d.client.prenom|capitalize }}</td>
     <td>
         {% if d.statut == 'nouveau' %}
             <span class="badge bg-primary">Nouveau</span>

@@ -1,29 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail de la notification{% endblock %}
+{% block title %}Détail de la notification
+{% endblock %}
 
 {% block body %}
-<div class="container py-4">
-    <h2 class="mb-3">Notification #{{ notification.id }}</h2>
-    <p><strong>Message :</strong> {{ notification.message }}</p>
-    <p><strong>Date :</strong> {{ notification.createdAt|date('d/m/Y H:i') }}</p>
+	{% include "commun/nav.html.twig" %}
 
-    {% if demande %}
-        <hr>
-        <h4>Détails de la demande de devis :</h4>
-        <ul class="list-group mb-3">
-            <li class="list-group-item"><strong>Nom :</strong> {{ demande.nom }}</li>
-            <li class="list-group-item"><strong>Email :</strong> {{ demande.email }}</li>
-            <li class="list-group-item"><strong>Téléphone :</strong> {{ demande.telephone }}</li>
-            <li class="list-group-item"><strong>Ville :</strong> {{ demande.ville }}</li>
-            <li class="list-group-item"><strong>Message :</strong> {{ demande.message }}</li>
-        </ul>
-    {% else %}
-        <div class="alert alert-warning">Aucune demande de devis associée à cette notification.</div>
-    {% endif %}
+	<div class="container py-4">
+		<h2 class="mb-3">{{ notification.message }}</h2>
+		<p>
+			<strong>Date :</strong>
+			{{ notification.createdAt|date('d/m/Y H:i') }}</p>
 
-    <a href="{{ path('admin_notifications_index') }}" class="btn btn-outline-dark mt-3">
-        ⬅ Retour à la liste
-    </a>
-</div>
+		{% if demande %}
+			<hr>
+			<h4>Détails de la demande:</h4>
+			<ul class="list-group mb-3">
+				<div class="row">
+					<div class="col-md-6">
+						<li class="list-group-item">
+							<strong>Nom :</strong>
+							{{ demande.nom|capitalize }}</li>
+						<li class="list-group-item">
+							<strong>Prenom :</strong>
+							{{ demande.prenom|capitalize }}</li>
+						<li class="list-group-item">
+							<strong>Email :</strong>
+							{{ demande.email }}</li>
+						<li class="list-group-item">
+							<strong>Téléphone :</strong>
+							{{ demande.telephone }}</li>
+						<li class="list-group-item">
+							<strong>Ville :</strong>
+							{{ demande.ville }}</li>
+						<li class="list-group-item">
+							<strong>Message :</strong>
+							{% if demande.message is same as NULL %}
+								Aucun Message
+							{% else %}
+
+								{{ demande.message }}
+							{% endif %}
+						</li>
+					</div>
+					<div class="col-md-6">
+						<li class="list-group-item">
+							<strong>Type d'intervention :</strong>
+							{{ demande.typeIntervention }}</li>
+						<li class="list-group-item">
+							<strong>Capacité souhaitée :</strong>
+							{{ demande.capacite }}</li>
+						<li class="list-group-item">
+							<strong>Positionnement :</strong>
+                            {% if demande.position is same as 'au_sol' %}
+                                Au sol
+                            {% elseif demande.position is same as 'horizontal_mural' %}
+                                Horizontal Mural
+                            {% else %}
+                                Vertical Mural    
+                            {% endif %}
+						</li>
+
+						<li class="list-group-item">
+							<strong>Accessibilité :</strong>
+							{{ demande.accessibilite }}</li>
+						<li class="list-group-item">
+							<strong>Ancien Modéle :</strong>
+							{% if demande.ancienModele is same as NULL %}
+								Non renseigné
+							{% else %}
+								{{ demande.ancienModele }}
+							{% endif %}
+						</li>
+					</div>
+
+				</div>
+			</ul>
+		{% else %}
+			<div class="alert alert-warning">Aucune demande de devis associée à cette notification.</div>
+		{% endif %}
+
+		<a href="{{ path('admin_notifications_index') }}" class="btn btn-outline-dark mt-3">
+			⬅ Retour à la liste
+		</a>
+	</div>
 {% endblock %}

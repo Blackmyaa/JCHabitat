@@ -69,7 +69,7 @@ class Client
      */ 
     public function getNom()
     {
-        return $this->nom;
+        return ucfirst(strtolower($this->nom));
     }
 
     /**
@@ -89,7 +89,7 @@ class Client
      */ 
     public function getPrenom()
     {
-        return $this->prenom;
+        return $ucfirst(strtolower($this->prenom));
     }
 
     /**

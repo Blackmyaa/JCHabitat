@@ -93,7 +93,7 @@ class Administrateur implements UserInterface, PasswordAuthenticatedUserInterfac
 
     public function getNom(): string
     {
-        return $this->nom;
+        return ucfirst(strtolower($this->nom));
     }
 
     public function setNom(string $nom): self
@@ -104,7 +104,7 @@ class Administrateur implements UserInterface, PasswordAuthenticatedUserInterfac
 
     public function getPrenom(): string
     {
-        return $this->prenom;
+        return ucfirst(strtolower($this->prenom));
     }
 
     public function setPrenom(string $prenom): self

@@ -80,7 +80,7 @@
                         {% for d in devis %}
                             <tr>
                                 <td>{{ d.numeroDevis }}</td>
-                                <td>{{ d.client.nom }} {{ d.client.prenom }}</td>
+                                <td>{{ d.client.nom|capitalize }} {{ d.client.prenom|capitalize }}</td>
                                 <td>{{ d.dateCreation|date('d/m/Y H:i') }}</td>
                                 <td>
                                     {% if d.statut == 'en_cours' %}

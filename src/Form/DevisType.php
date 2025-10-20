@@ -63,8 +63,8 @@ class DevisType extends AbstractType
                 'label' => 'Type d’intervention',
                 'multiple' => false,
                 'choices' => [
-                    'Remplacement d’un cumulus existant' => 'remplacement',
-                    'Installation d’un nouveau cumulus' => 'installation',
+                    'Remplacement d’un cumulus existant' => 'Remplacement',
+                    'Installation d’un nouveau cumulus' => 'Installation',
                 ],
                 'placeholder' => '--Sélectionnez le type d’intervention--',
                 'constraints' => [new NotBlank(['message' => 'Veuillez préciser le type d’intervention.'])],
