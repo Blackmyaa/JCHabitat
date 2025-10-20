@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la notification{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h2 class="mb-3">Notification #{{ notification.id }}</h2>
+    <p><strong>Message :</strong> {{ notification.message }}</p>
+    <p><strong>Date :</strong> {{ notification.createdAt|date('d/m/Y H:i') }}</p>
+
+    {% if demande %}
+        <hr>
+        <h4>Détails de la demande de devis :</h4>
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><strong>Nom :</strong> {{ demande.nom }}</li>
+            <li class="list-group-item"><strong>Email :</strong> {{ demande.email }}</li>
+            <li class="list-group-item"><strong>Téléphone :</strong> {{ demande.telephone }}</li>
+            <li class="list-group-item"><strong>Ville :</strong> {{ demande.ville }}</li>
+            <li class="list-group-item"><strong>Message :</strong> {{ demande.message }}</li>
+        </ul>
+    {% else %}
+        <div class="alert alert-warning">Aucune demande de devis associée à cette notification.</div>
+    {% endif %}
+
+    <a href="{{ path('admin_notifications_index') }}" class="btn btn-outline-dark mt-3">
+        ⬅ Retour à la liste
+    </a>
+</div>
+{% endblock %}

@@ -4,9 +4,7 @@
 
 {% block body %}
 {% include "Admin/commun/_menu.html.twig" %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">{{ message }}</div>
-    {% endfor %}
+
 <div class="container my-5">
     <h1 class="text-center mb-4">Tableau de bord administrateur</h1>
 
@@ -40,6 +38,24 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="mb-3">
+        <h2>Nouvelles demandes devis</h2>
+        {% if notifications is not empty %}
+
+            <ul class="list-group">
+                {% for notif in notifications %}
+                    <li class="list-group-item {{ notif.isRead ? '' : 'fw-bold' }}">
+                        {{ notif.message }} 
+                        <small class="text-muted">{{ notif.createdAt|date('d/m/Y H:i') }}</small>
+                    </li>
+                {% else %}
+                    <li class="list-group-item">Aucune notification.</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <li class="list-group-item">Aucune notification.</li>
+        {% endif %}
     </div>
 
     {# === Tableau des devis === #}

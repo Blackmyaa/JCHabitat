@@ -42,6 +42,9 @@
                 Intervention rapide, efficace et garantie sur vos chauffe-eaux.
             </p>
         </section>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
 
         <!-- Services -->
         <section class="container py-5">

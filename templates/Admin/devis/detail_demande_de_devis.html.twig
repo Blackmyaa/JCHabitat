@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la demande de devis
+{% endblock %}
+
+{% block body %}
+{% include "Admin/commun/_menu.html.twig" %}
+
+	<div class="container py-5">
+		<h1 class="mb-4">Détail de la demande de devis</h1>
+
+		<div class="card shadow-sm mb-4">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-6">
+                        <h5 class="card-title">Nom Complet:
+                            {{ demande.nom }}
+                            {{ demande.prenom }}</h5>
+                        <p class="card-text">
+                            <strong>Email :</strong>
+                            {{ demande.email }}</p>
+                        <p class="card-text">
+                            <strong>Téléphone :</strong>
+                            {{ demande.telephone }}</p>
+                        <p class="card-text">
+                            <strong>Pays :</strong>
+                            {{ demande.pays }}</p>
+                        <p class="card-text">
+                            <strong>Ville :</strong>
+                            {{ demande.ville }}</p>
+                        <p class="card-text">
+                            <strong>Type d’intervention :</strong>
+                            {{ demande.typeIntervention }}</p>
+                    </div>
+
+					<div class="col-6">
+                    
+                        <p class="card-text">
+                            <strong>Capacité :</strong>
+                            {{ demande.capacite }}</p>
+                        <p class="card-text">
+                            <strong>Position :</strong>
+                            {% if demande.position is same as('au_sol')  %}
+                                Au Sol
+                            {% elseif demande.position is same as('horizontal_mural')  %}
+                                Horizontal Mural
+                            {% elseif demande.position is same as('vertical_mural') %}
+                                Vertical Mural
+                            {% endif %}
+                            
+                            </p>
+                        <p class="card-text">
+                            <strong>Accessibilité :</strong>
+                            {{ demande.accessibilite }}</p>
+                        <p class="card-text">
+                            <strong>Ancien modèle :</strong>
+                            {{ demande.ancienModele }}</p>
+                        <p class="card-text">
+                            <strong>Message :</strong>
+                        </p>
+                        <div class="p-3 bg-light border rounded">{{ demande.message|nl2br }}</div>
+                        <p class="card-text mt-3">
+                            <strong>Date de création :</strong>
+                            {{ demande.dateDemande|date('d/m/Y H:i') }}</p>
+                    </div>
+				</div>
+			</div>
+		</div>
+
+		{% if demande.photos %}
+			<div class="mb-4">
+				<h5>📸 Photos fournies :</h5>
+				<img src="{{ asset('uploads/photos_devis/' ~ demande.photos) }}" alt="Photo de la demande" class="img-fluid rounded">
+			</div>
+		{% endif %}
+
+		<div class="d-flex gap-2">
+			<a href="{{ path('app_demandes_devis') }}" class="btn btn-secondary">⬅️ Retour à la liste</a>
+			<a href="#" class="btn btn-success">📄 Générer un devis</a>
+		</div>
+	</div>
+{% endblock %}

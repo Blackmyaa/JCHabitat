@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notifications administrateur{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h1 class="mb-4">📬 Notifications</h1>
+
+    {% if notifications is empty %}
+        <div class="alert alert-info text-center">
+            Aucune notification pour le moment.
+        </div>
+    {% else %}
+        <form action="{{ path('admin_notifications_mark_all') }}" method="post" class="mb-3">
+            <button type="submit" class="btn btn-sm btn-outline-primary">
+                Tout marquer comme lu
+            </button>
+        </form>
+
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notif in notifications %}
+                    <tr class="{{ not notif.isRead ? 'table-light' : '' }}">
+                        <td>{{ notif.message }}</td>
+                        <td>{{ notif.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>
+                            {% if notif.isRead %}
+                                <span class="badge bg-success">Lu</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Non lu</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{{ path('admin_notifications_view', {id: notif.id}) }}"
+                               target="_blank"
+                               class="btn btn-sm btn-outline-info">
+                                Consulter
+                            </a>
+
+                            {% if notif.isRead %}
+                                <form action="{{ path('admin_notifications_mark_unread', {id: notif.id}) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-warning">Marquer non lu</button>
+                                </form>
+                            {% else %}
+                                <form action="{{ path('admin_notifications_mark_read', {id: notif.id}) }}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Marquer lu</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}

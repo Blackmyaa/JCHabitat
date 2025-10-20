@@ -45,9 +45,10 @@ class DevisType extends AbstractType
             ])
             ->add('pays', ChoiceType::class, [
                 'label' => 'Pays',
+                'multiple' => false,
                 'choices' => [
-                    'France' => 'france',
-                    'Belgique' => 'belgique',
+                    'France' => 'France',
+                    'Belgique' => 'Belgique',
                 ],
                 'placeholder' => '--Sélectionnez votre pays--',
                 'constraints' => [new NotBlank(['message' => 'Veuillez sélectionner un pays.'])],
@@ -60,6 +61,7 @@ class DevisType extends AbstractType
             // 🔹 Type d’intervention
             ->add('type_intervention', ChoiceType::class, [
                 'label' => 'Type d’intervention',
+                'multiple' => false,
                 'choices' => [
                     'Remplacement d’un cumulus existant' => 'remplacement',
                     'Installation d’un nouveau cumulus' => 'installation',
@@ -71,18 +73,20 @@ class DevisType extends AbstractType
             // 🔹 Données techniques
             ->add('capacite', ChoiceType::class, [
                 'label' => 'Capacité du chauffe-eau',
+                'multiple' => false,
                 'choices' => [
-                    '50 L' => 50,
-                    '100 L' => 100,
-                    '150 L' => 150,
-                    '200 L' => 200,
-                    '300 L' => 300,
+                    '50 L' => '50L',
+                    '100 L' => '100L',
+                    '150 L' => '150L',
+                    '200 L' => '200L',
+                    '300 L' => '300L',
                 ],
                 'placeholder' => '--Sélectionnez la capacité souhaitée--',
                 'constraints' => [new NotBlank(['message' => 'Veuillez choisir une capacité.'])],
             ])
             ->add('position', ChoiceType::class, [
                 'label' => 'Position de l’appareil',
+                'multiple' => false,
                 'choices' => [
                     'Vertical mural' => 'vertical_mural',
                     'Horizontal mural' => 'horizontal_mural',
@@ -92,10 +96,11 @@ class DevisType extends AbstractType
             ])
             ->add('accessibilite', ChoiceType::class, [
                 'label' => 'Accessibilité du lieu',
+                'multiple' => false,
                 'choices' => [
-                    'Facile (rez-de-chaussée, accès direct)' => 'facile',
-                    'Moyenne (1er étage, escalier large)' => 'moyenne',
-                    'Difficile (étage élevé ou accès restreint)' => 'difficile',
+                    'Facile (rez-de-chaussée, accès direct)' => 'Facile',
+                    'Moyenne (1er étage, escalier large)' => 'Moyenne',
+                    'Difficile (étage élevé ou accès restreint)' => 'Difficile',
                 ],
                 'placeholder' => '--Évaluez l’accessibilité--',
             ])
@@ -106,24 +111,24 @@ class DevisType extends AbstractType
                 'required' => false,
             ])
 
-            // 🔹 Upload photo (max 3 fichiers)
-            ->add('photos', FileType::class, [
-                'label' => 'Photos (maximum 3)',
-                'multiple' => true,
-                'mapped' => false,
-                'required' => false,
-                'constraints' => [
-                    new Count([
-                        'max' => 3,
-                        'maxMessage' => 'Vous pouvez envoyer au maximum 3 photos.',
-                    ]),
-                    new File([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
-                        'mimeTypesMessage' => 'Seules les images JPEG, PNG ou WEBP sont autorisées.',
-                    ]),
-                ],
-            ])
+            // // 🔹 Upload photo (max 3 fichiers)
+            // ->add('photos', FileType::class, [
+            //     'label' => 'Photos (maximum 3)',
+            //     'multiple' => false,
+            //     'mapped' => false,
+            //     'required' => false,
+            //     'constraints' => [
+            //         new Count([
+            //             'max' => 3,
+            //             'maxMessage' => 'Vous pouvez envoyer au maximum 3 photos.',
+            //         ]),
+            //         new File([
+            //             'maxSize' => '5M',
+            //             'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+            //             'mimeTypesMessage' => 'Seules les images JPEG, PNG ou WEBP sont autorisées.',
+            //         ]),
+            //     ],
+            // ])
 
             // 🔹 Message complémentaire
             ->add('message', TextareaType::class, [
