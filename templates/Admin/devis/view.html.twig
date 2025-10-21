@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du devis n°{{ devis.numeroDevis }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Détail du devis</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations du devis</h5>
+            <p><strong>Numéro :</strong> {{ devis.numeroDevis }}</p>
+            <p><strong>Date de création :</strong> {{ devis.dateCreation|date('d/m/Y H:i') }}</p>
+            <p><strong>Statut :</strong> {{ devis.statut|capitalize }}</p>
+            <p><strong>Montant total :</strong> {{ devis.montantTotal|number_format(2, ',', ' ') }} €</p>
+        </div>
+    </div>
+
+    {% if client %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations client</h5>
+            <p><strong>Nom :</strong> {{ client.nom }}</p>
+            <p><strong>Prénom :</strong> {{ client.prenom }}</p>
+            <p><strong>Email :</strong> {{ client.email }}</p>
+            {% if client.telephone %}
+                <p><strong>Téléphone :</strong> {{ client.telephone }}</p>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if demande %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations sur la demande associée</h5>
+            <p><strong>Type de projet :</strong> {{ demande.typeIntervention }}</p>
+            <p><strong>Date de la demande :</strong> {{ demande.datedemande|date('d/m/Y') }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Détails de la prestation</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Quantité</th>
+                        <th>Prix unitaire (€)</th>
+                        <th>Sous-total (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ligne in devis.lignes ?? [] %}
+                        <tr>
+                            <td>{{ ligne.description }}</td>
+                            <td>{{ ligne.quantity }}</td>
+                            <td>{{ ligne.unitPrice|number_format(2, ',', ' ') }}</td>
+                            <td>{{ (ligne.quantity * ligne.unitPrice)|number_format(2, ',', ' ') }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">Aucune ligne de prestation enregistrée.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-end mt-4">
+        <a href="{# {{ path('admin_devis_list') }} #}" class="btn btn-secondary">⬅ Retour à la liste</a>
+        <button class="btn btn-primary">📄 Télécharger en PDF</button>
+        <button class="btn btn-success">✉️ Envoyer au client</button>
+    </div>
+</div>
+{% endblock %}

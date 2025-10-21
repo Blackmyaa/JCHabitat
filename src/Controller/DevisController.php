@@ -49,7 +49,9 @@ final class DevisController extends AbstractController
             // - afficher une confirmation
             
             $this->addFlash('success', 'Votre demande de devis a bien été envoyé !');
-            return $this->redirectToRoute('app_accueil');
+            return $this->redirectToRoute('app_client_create_from_demande', [
+                'demandeId' => $demande->getId(),
+            ]);
         }
 
         return $this->render('devis/demandeDevis.html.twig', [

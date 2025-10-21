@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un devis{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Créer un devis pour la demande de {{ demande.nom }} {{ demande.prenom }}</h1>
+
+    <form method="post" action="{{ path('admin_devis_create', {'demandeId': demande.id}) }}">
+        <div class="mb-3">
+            <label>Client :</label>
+            <input type="text" class="form-control" value="{{ demande.nom }} {{ demande.prenom }}" disabled>
+        </div>
+
+        <div class="mb-3">
+            <label>Email :</label>
+            <input type="text" class="form-control" value="{{ demande.email }}" disabled>
+        </div>
+
+        <div class="mb-3">
+            <label>Type d'intervention :</label>
+            <input type="text" class="form-control" value="{{ demande.typeIntervention }}" disabled>
+        </div>
+
+        <hr>
+
+        <h3>Lignes du devis</h3>
+        <table class="table" id="devisLines">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire (€)</th>
+                    <th>Total (€)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" name="lines[0][description]" class="form-control"></td>
+                    <td><input type="number" name="lines[0][quantity]" class="form-control" value="1"></td>
+                    <td><input type="number" step="0.01" name="lines[0][unitPrice]" class="form-control"></td>
+                    <td class="lineTotal">0</td>
+                    <td><button type="button" class="btn btn-danger removeLine">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-secondary mb-3" id="addLine">Ajouter une ligne</button>
+
+        <div class="mb-3">
+            <strong>Montant total : </strong><span id="totalAmount">0</span> €
+        </div>
+
+        <button type="submit" class="btn btn-primary">Créer le devis</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let lineIndex = 1;
+
+    function updateTotals() {
+        let total = 0;
+        document.querySelectorAll('#devisLines tbody tr').forEach(tr => {
+            const qty = parseFloat(tr.querySelector('input[name$="[quantity]"]').value) || 0;
+            const unit = parseFloat(tr.querySelector('input[name$="[unitPrice]"]').value) || 0;
+            const lineTotal = qty * unit;
+            tr.querySelector('.lineTotal').textContent = lineTotal.toFixed(2);
+            total += lineTotal;
+        });
+        document.getElementById('totalAmount').textContent = total.toFixed(2);
+    }
+
+    document.getElementById('addLine').addEventListener('click', () => {
+        const tbody = document.querySelector('#devisLines tbody');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><input type="text" name="lines[${lineIndex}][description]" class="form-control"></td>
+            <td><input type="number" name="lines[${lineIndex}][quantity]" class="form-control" value="1"></td>
+            <td><input type="number" step="0.01" name="lines[${lineIndex}][unitPrice]" class="form-control"></td>
+            <td class="lineTotal">0</td>
+            <td><button type="button" class="btn btn-danger removeLine">X</button></td>
+        `;
+        tbody.appendChild(newRow);
+        lineIndex++;
+        attachRemove();
+    });
+
+    function attachRemove() {
+        document.querySelectorAll('.removeLine').forEach(btn => {
+            btn.onclick = function() {
+                this.closest('tr').remove();
+                updateTotals();
+            }
+        });
+    }
+    attachRemove();
+
+    document.querySelector('#devisLines').addEventListener('input', updateTotals);
+});
+</script>
+{% endblock %}

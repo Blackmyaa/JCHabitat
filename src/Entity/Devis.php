@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\DevisRepository;
+use App\Entity\DevisLigne;
+use App\Entity\DevisBallon;
+use App\Entity\DemandeDeDevis;
+use App\Entity\DevisPrestation;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Repository\DevisRepository;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: DevisRepository::class)]
 class Devis
@@ -21,6 +25,10 @@ class Devis
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $dateCreation;
 
+    #[ORM\ManyToOne(targetEntity: DemandeDeDevis::class, inversedBy: 'devis')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    private ?DemandeDeDevis $demande = null;
+    
     #[ORM\Column(length: 20)]
     private string $statut;
 
@@ -44,9 +52,14 @@ class Devis
     #[ORM\Column(type: 'boolean')]
     private bool $isRead = false;
 
+    // 🔹 Relation avec les lignes
+    #[ORM\OneToMany(mappedBy: 'devis', targetEntity: DevisLigne::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $lignes;
+
     public function __construct()
     {
         $this->dateCreation = new \DateTimeImmutable();
+        $this->lignes = new ArrayCollection();
         $this->devisBallons = new ArrayCollection();
         $this->devisPrestations = new ArrayCollection();
     }
@@ -219,6 +232,58 @@ class Devis
     {
         $this->dateCreation = $dateCreation;
 
+        return $this;
+    }
+
+    /**
+     * Get the value of demande
+     */ 
+    public function getDemande()
+    {
+        return $this->demande;
+    }
+
+    /**
+     * Set the value of demande
+     *
+     * @return  self
+     */ 
+    public function setDemande($demande)
+    {
+        $this->demande = $demande;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Collection|DevisLigne[]
+     */
+    public function getLignes(): Collection { return $this->lignes; }
+
+    public function addLigne(DevisLigne $ligne): self
+    {
+        if (!$this->lignes->contains($ligne)) {
+            $this->lignes->add($ligne);
+            $ligne->setDevis($this);
+        }
+        return $this;
+    }
+
+    public function removeLigne(DevisLigne $ligne): self
+    {
+        if ($this->lignes->removeElement($ligne)) {
+            if ($ligne->getDevis() === $this) {
+                $ligne->setDevis(null);
+            }
+        }
         return $this;
     }
 }

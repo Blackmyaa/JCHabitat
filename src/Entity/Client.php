@@ -89,7 +89,7 @@ class Client
      */ 
     public function getPrenom()
     {
-        return $ucfirst(strtolower($this->prenom));
+        return ucfirst(strtolower($this->prenom));
     }
 
     /**

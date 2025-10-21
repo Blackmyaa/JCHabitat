@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Complétez vos informations{% endblock %}
+
+{% block body %}
+<body class="d-flex flex-column min-vh-100">
+    {% include "commun/nav.html.twig" %}
+    <div class="container py-5">
+        <h1 class="mb-4">Complétez vos informations pour finaliser votre demande</h1>
+
+        <div class="alert alert-info">
+            <strong>Demande associée :</strong><br>
+            <u>Nom :</u> {{ demande.nom }}<br>
+            <u>Prénom :</u> {{ demande.prenom }}<br>
+            <u>Email :</u> {{ demande.email }}
+        </div>
+
+        {{ form_start(form) }}
+        <div class="card p-4 shadow-sm">
+            {{ form_row(form.nom) }}
+            {{ form_row(form.prenom) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.telephone) }}
+            {{ form_row(form.adresse) }}
+            {{form_row(form.code_postal)}}
+            {{ form_row(form.ville) }}
+        </div>
+
+        <div class="mt-3 text-center">
+            <button type="submit" class="btn btn-success">
+                💾 Enregistrer mes informations
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    {% include "commun/_footer.html.twig" %}
+</body>
+{% endblock %}

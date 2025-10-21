@@ -69,10 +69,14 @@ class DemandeDeDevis
     #[ORM\OneToMany(mappedBy: 'demande', targetEntity: NotificationAdmin::class)]
     private Collection $notifications;
 
+    #[ORM\OneToMany(mappedBy: 'demande', targetEntity: Devis::class)]
+    private Collection $devis;
+
     public function __construct()
     {
         $this->dateDemande = new \DateTime();
         $this->notifications = new ArrayCollection();
+        $this->devis = new ArrayCollection();
     }
 
     // 💡 Getters & Setters
@@ -129,4 +133,6 @@ class DemandeDeDevis
     {
         return $this->notifications;
     }
+
+    public function getDevis(): Collection { return $this->devis; }
 }

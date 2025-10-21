@@ -54,11 +54,22 @@
                             {{ demande.accessibilite }}</p>
                         <p class="card-text">
                             <strong>Ancien modèle :</strong>
-                            {{ demande.ancienModele }}</p>
+                            {% if demande.ancienModele is same as NULL %}
+                                Non renseigné
+                            {% else %}
+                                {{ demande.ancienModele }}</p>
+                            {% endif %}
+                            
                         <p class="card-text">
                             <strong>Message :</strong>
                         </p>
-                        <div class="p-3 bg-light border rounded">{{ demande.message|nl2br }}</div>
+                        <div class="p-3 bg-light border rounded">
+                        {% if demande.message is same as NULL %}
+                            Aucun Message
+                        {% else %}
+                            {{ demande.message|nl2br }}</div>
+                        {% endif %}
+                        </p>
                         <p class="card-text mt-3">
                             <strong>Date de création :</strong>
                             {{ demande.dateDemande|date('d/m/Y H:i') }}</p>
@@ -76,7 +87,7 @@
 
 		<div class="d-flex gap-2">
 			<a href="{{ path('app_demandes_devis') }}" class="btn btn-secondary">⬅️ Retour à la liste</a>
-			<a href="#" class="btn btn-success">📄 Générer un devis</a>
+			<a href="{{ path('admin_devis_create', {'demandeId': demande.id}) }}" class="btn btn-success">📄 Générer un devis</a>
 		</div>
 	</div>
 {% endblock %}
