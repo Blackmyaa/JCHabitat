@@ -13,6 +13,9 @@ class DevisLigne
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
     #[ORM\ManyToOne(targetEntity: Devis::class, inversedBy: 'lignes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Devis $devis = null;
@@ -41,4 +44,24 @@ class DevisLigne
     public function setUnitPrice(float $unitPrice): self { $this->unitPrice = $unitPrice; return $this; }
 
     public function getTotal(): float { return $this->quantity * $this->unitPrice; }
+
+    /**
+     * Get the value of title
+     */ 
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the value of title
+     *
+     * @return  self
+     */ 
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
 }

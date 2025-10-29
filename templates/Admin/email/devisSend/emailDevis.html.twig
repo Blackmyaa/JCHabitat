@@ -1,0 +1,25 @@
+<h2>Bonjour {{ client.nom }} {{ client.prenom }},</h2>
+
+<p>Veuillez trouver ci-joint votre devis numéro <strong>{{ devis.numeroDevis }}</strong>.</p>
+
+<h3>Récapitulatif de votre demande :</h3>
+<ul>
+    <li>Type d'intervention : {{ devis.demande.typeIntervention }}</li>
+    <li>Capacité : {{ devis.demande.capacite }}</li>
+    <li>Position : {{ devis.demande.position }}</li>
+    <li>Accessibilité : {{ devis.demande.accessibilite }}</li>
+</ul>
+
+<h3>Montant total : {{ devis.montantTotal|number_format(2, ',', ' ') }} €</h3>
+
+<h5>Vous trouverez le détail de votre devis dans la pièce jointe.</h5>
+
+<p>Pour accepter ou refuser ce devis, cliquez sur un des boutons ci-dessous :</p>
+
+<p>
+    <a href="{{ url('client_devis_accept', {'id': devis.id}) }}" style="padding:10px 20px; background-color:green; color:white; text-decoration:none;">Accepter le devis</a>
+    <a href="{{ url('client_devis_reject', {'id': devis.id}) }}" style="padding:10px 20px; background-color:red; color:white; text-decoration:none;">Refuser le devis</a>
+</p>
+
+<p>Merci de votre confiance,</p>
+<p>JCHabitat</p>

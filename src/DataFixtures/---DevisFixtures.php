@@ -33,6 +33,7 @@ class DevisFixtures extends Fixture
             $devis = new Devis();
             $devis->setClient($faker->randomElement($clients));
             $devis->setAdministrateur($admin);
+            $devis->setDemande(1);
             $devis->setNumeroDevis('DEV-' . $faker->unique()->numerify('####'));
             $devis->setDateCreation($faker->dateTimeBetween('-2 months', 'now'));
             $devis->setStatut($faker->randomElement($statuses));

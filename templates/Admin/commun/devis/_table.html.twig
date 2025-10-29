@@ -15,6 +15,7 @@
     </td>
     <td>{{ d.dateCreation|date('d/m/Y') }}</td>
     <td>{{ d.montantTotal }} €</td>
+    <td><a href="{{ path('admin_devis_view', {id: d.id})}}" class="btn btn-secondary">Consulter</td>
 </tr>
 {% else %}
 <tr>

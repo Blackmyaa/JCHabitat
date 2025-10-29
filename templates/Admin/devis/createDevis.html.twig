@@ -1,102 +1,243 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Créer un devis{% endblock %}
+{% block title %}Créer un devis
+{% endblock %}
 
 {% block body %}
+{% include "Admin/commun/_menu.html.twig" %}
+
 <div class="container mt-5">
-    <h1>Créer un devis pour la demande de {{ demande.nom }} {{ demande.prenom }}</h1>
+	<h1>Créer un devis pour la demande de
+		{{ demande.nom }}
+		{{ demande.prenom }}</h1>
 
-    <form method="post" action="{{ path('admin_devis_create', {'demandeId': demande.id}) }}">
-        <div class="mb-3">
-            <label>Client :</label>
-            <input type="text" class="form-control" value="{{ demande.nom }} {{ demande.prenom }}" disabled>
-        </div>
+	<form method="post" action="{{ path('admin_devis_create', {'demandeId': demande.id}) }}">
+		<div class="mb-3">
+			<label>Client :</label>
+			<input type="text" class="form-control" value="{{ demande.nom }} {{ demande.prenom }}" disabled>
+		</div>
 
-        <div class="mb-3">
-            <label>Email :</label>
-            <input type="text" class="form-control" value="{{ demande.email }}" disabled>
-        </div>
+		<div class="mb-3">
+			<label>Email :</label>
+			<input type="text" class="form-control" value="{{ demande.email }}" disabled>
+		</div>
 
-        <div class="mb-3">
-            <label>Type d'intervention :</label>
-            <input type="text" class="form-control" value="{{ demande.typeIntervention }}" disabled>
-        </div>
+		<div class="mb-3">
+			<label>Type d'intervention :</label>
+			<input type="text" class="form-control" value="{{ demande.typeIntervention }}" disabled>
+		</div>
 
-        <hr>
+		<hr>
 
-        <h3>Lignes du devis</h3>
-        <table class="table" id="devisLines">
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Quantité</th>
-                    <th>Prix unitaire (€)</th>
-                    <th>Total (€)</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" name="lines[0][description]" class="form-control"></td>
-                    <td><input type="number" name="lines[0][quantity]" class="form-control" value="1"></td>
-                    <td><input type="number" step="0.01" name="lines[0][unitPrice]" class="form-control"></td>
-                    <td class="lineTotal">0</td>
-                    <td><button type="button" class="btn btn-danger removeLine">X</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button type="button" class="btn btn-secondary mb-3" id="addLine">Ajouter une ligne</button>
+		{# <h3>Lignes du devis</h3>
+		        <table class="table" id="devisLines">
+		            <thead>
+		                <tr>
+		                    <th>Description</th>
+		                    <th>Quantité</th>
+		                    <th>Prix unitaire (€)</th>
+		                    <th>Total (€)</th>
+		                    <th></th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                <tr>
+		                    <td><input type="text" name="lines[0][description]" class="form-control"></td>
+		                    <td><input type="number" name="lines[0][quantity]" class="form-control" value="1"></td>
+		                    <td><input type="number" step="0.01" name="lines[0][unitPrice]" class="form-control"></td>
+		                    <td class="lineTotal">0</td>
+		                    <td><button type="button" class="btn btn-danger removeLine">X</button></td>
+		                </tr>
+		            </tbody>
+		        </table>
+		        <button type="button" class="btn btn-secondary mb-3" id="addLine">Ajouter une ligne</button>
+		
+		        <div class="mb-3">
+		            <strong>Montant total : </strong><span id="totalAmount">0</span> €
+		        </div>
+		
+		        <button type="submit" class="btn btn-primary">Créer le devis</button>
+		    </form>
+		</div>
+		
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+		    let lineIndex = 1;
+		
+		    function updateTotals() {
+		        let total = 0;
+		        document.querySelectorAll('#devisLines tbody tr').forEach(tr => {
+		            const qty = parseFloat(tr.querySelector('input[name$="[quantity]"]').value) || 0;
+		            const unit = parseFloat(tr.querySelector('input[name$="[unitPrice]"]').value) || 0;
+		            const lineTotal = qty * unit;
+		            tr.querySelector('.lineTotal').textContent = lineTotal.toFixed(2);
+		            total += lineTotal;
+		        });
+		        document.getElementById('totalAmount').textContent = total.toFixed(2);
+		    }
+		
+		    document.getElementById('addLine').addEventListener('click', () => {
+		        const tbody = document.querySelector('#devisLines tbody');
+		        const newRow = document.createElement('tr');
+		        newRow.innerHTML = `
+		            <td><input type="text" name="lines[${lineIndex}][description]" class="form-control"></td>
+		            <td><input type="number" name="lines[${lineIndex}][quantity]" class="form-control" value="1"></td>
+		            <td><input type="number" step="0.01" name="lines[${lineIndex}][unitPrice]" class="form-control"></td>
+		            <td class="lineTotal">0</td>
+		            <td><button type="button" class="btn btn-danger removeLine">X</button></td>
+		        `;
+		        tbody.appendChild(newRow);
+		        lineIndex++;
+		        attachRemove();
+		    });
+		
+		    function attachRemove() {
+		        document.querySelectorAll('.removeLine').forEach(btn => {
+		            btn.onclick = function() {
+		                this.closest('tr').remove();
+		                updateTotals();
+		            }
+		        });
+		    }
+		    attachRemove();
+		
+		    document.querySelector('#devisLines').addEventListener('input', updateTotals);
+		});
+		</script>
+		{% endblock %}
+		 #}
 
-        <div class="mb-3">
-            <strong>Montant total : </strong><span id="totalAmount">0</span> €
-        </div>
+<table class="table table-bordered" id="devisLines">
+    <thead class="table-light">
+        <tr>
+            <th style="width: 25%">Intitulé</th>
+            <th style="width: 40%">Description</th>
+            <th style="width: 10%">Quantité</th>
+            <th style="width: 15%">Prix unitaire (€)</th>
+            <th style="width: 10%">Total (€)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <select name="lines[0][title]" class="form-select prestation-select">
+                    <option value="">-- Sélectionner une prestation --</option>
+                    <option value="Dépose de l’ancien ballon">Dépose de l’ancien ballon</option>
+                    <option value="Fourniture d’un ballon d’eau chaude">Fourniture d’un ballon d’eau chaude</option>
+                    <option value="Pose et raccordement du nouveau ballon">Pose et raccordement du nouveau ballon</option>
+                    <option value="Mise en service complète">Mise en service complète</option>
+                </select>
+            </td>
+            <td>
+                <textarea name="lines[0][description]" class="form-control description-area" rows="4"></textarea>
+            </td>
+            <td><input type="number" name="lines[0][quantity]" class="form-control quantity" value="1" min="1"></td>
+            <td><input type="number" step="0.01" name="lines[0][unitPrice]" class="form-control unitPrice"></td>
+            <td class="lineTotal">0.00</td>
+            <td><button type="button" class="btn btn-danger removeLine">X</button></td>
+        </tr>
+    </tbody>
+</table>
 
-        <button type="submit" class="btn btn-primary">Créer le devis</button>
-    </form>
+<button type="button" class="btn btn-secondary mb-3" id="addLine">+ Ajouter une ligne</button>
+
+<div class="mt-3">
+    <strong>Total HT :</strong> <span id="totalAmount">0.00</span> €
+    <br>
+    <strong>TVA (0%) :</strong> 0.00 €
+    <br>
+    <strong>Total TTC :</strong> <span id="totalTTC">0.00</span> €
 </div>
+
+<button type="submit" class="btn btn-primary mt-3">Créer le devis</button>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     let lineIndex = 1;
 
+    const prestations = {
+        "Dépose de l’ancien ballon": [
+            "• Vidange complète de l’appareil existant",
+            "• Déconnexion électrique et hydraulique",
+            "• Dépose et évacuation de l’ancien ballon vers déchèterie agréée"
+        ],
+        "Fourniture d’un ballon d’eau chaude": [
+            "• Mise en place du nouveau ballon",
+            "• Marque type Atlantic / Ariston / Thermor",
+            "• Cuve émaillée, résistance stéatite ou blindée selon option",
+            "• Garantie 5 ans cuve, 2 ans pièces"
+        ],
+        "Pose et raccordement du nouveau ballon": [
+            "• Mise en place sur support mural ou trépied",
+            "• Raccordement hydraulique (alimentation + sortie eau chaude)",
+            "• Raccordement électrique avec protection adaptée",
+            "• Installation du groupe de sécurité 7 bars neuf"
+        ],
+        "Mise en service complète": [
+            "• Remplissage, purge, vérification étanchéité",
+            "• Test du groupe de sécurité et contrôle électrique"
+        ]
+    };
+
     function updateTotals() {
         let total = 0;
         document.querySelectorAll('#devisLines tbody tr').forEach(tr => {
-            const qty = parseFloat(tr.querySelector('input[name$="[quantity]"]').value) || 0;
-            const unit = parseFloat(tr.querySelector('input[name$="[unitPrice]"]').value) || 0;
+            const qty = parseFloat(tr.querySelector('.quantity').value) || 0;
+            const unit = parseFloat(tr.querySelector('.unitPrice').value) || 0;
             const lineTotal = qty * unit;
             tr.querySelector('.lineTotal').textContent = lineTotal.toFixed(2);
             total += lineTotal;
         });
         document.getElementById('totalAmount').textContent = total.toFixed(2);
+        document.getElementById('totalTTC').textContent = total.toFixed(2); // TVA = 0%
+    }
+
+    function attachEvents(tr) {
+        const select = tr.querySelector('.prestation-select');
+        const description = tr.querySelector('.description-area');
+
+        select.addEventListener('change', function() {
+            const selected = this.value;
+            description.value = prestations[selected] ? prestations[selected].join("\n") : "";
+        });
+
+        tr.querySelectorAll('.quantity, .unitPrice').forEach(input => {
+            input.addEventListener('input', updateTotals);
+        });
+
+        tr.querySelector('.removeLine').addEventListener('click', function() {
+            tr.remove();
+            updateTotals();
+        });
     }
 
     document.getElementById('addLine').addEventListener('click', () => {
         const tbody = document.querySelector('#devisLines tbody');
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
-            <td><input type="text" name="lines[${lineIndex}][description]" class="form-control"></td>
-            <td><input type="number" name="lines[${lineIndex}][quantity]" class="form-control" value="1"></td>
-            <td><input type="number" step="0.01" name="lines[${lineIndex}][unitPrice]" class="form-control"></td>
-            <td class="lineTotal">0</td>
+            <td>
+                <select name="lines[${lineIndex}][title]" class="form-select prestation-select">
+                    <option value="">-- Sélectionner une prestation --</option>
+                    <option value="Dépose de l’ancien ballon">Dépose de l’ancien ballon</option>
+                    <option value="Fourniture d’un ballon d’eau chaude">Fourniture d’un ballon d’eau chaude</option>
+                    <option value="Pose et raccordement du nouveau ballon">Pose et raccordement du nouveau ballon</option>
+                    <option value="Mise en service complète">Mise en service complète</option>
+                </select>
+            </td>
+            <td><textarea name="lines[${lineIndex}][description]" class="form-control description-area" rows="4"></textarea></td>
+            <td><input type="number" name="lines[${lineIndex}][quantity]" class="form-control quantity" value="1" min="1"></td>
+            <td><input type="number" step="0.01" name="lines[${lineIndex}][unitPrice]" class="form-control unitPrice"></td>
+            <td class="lineTotal">0.00</td>
             <td><button type="button" class="btn btn-danger removeLine">X</button></td>
         `;
         tbody.appendChild(newRow);
+        attachEvents(newRow);
         lineIndex++;
-        attachRemove();
     });
 
-    function attachRemove() {
-        document.querySelectorAll('.removeLine').forEach(btn => {
-            btn.onclick = function() {
-                this.closest('tr').remove();
-                updateTotals();
-            }
-        });
-    }
-    attachRemove();
-
-    document.querySelector('#devisLines').addEventListener('input', updateTotals);
+    // Attacher les événements aux lignes existantes
+    document.querySelectorAll('#devisLines tbody tr').forEach(attachEvents);
 });
 </script>
 {% endblock %}

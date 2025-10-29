@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<title>Devis
+			{{ devis.numeroDevis }}</title>
+		<style>
+			body {
+				font-family: DejaVu Sans, sans-serif;
+				font-size: 12px;
+				color: #333;
+				margin: 0;
+				padding: 0;
+			}
+
+			header {
+				border-bottom: 2px solid #222;
+				padding: 20px;
+				display: flex;
+				justify-content: space-between;
+			}
+
+			.logo {
+				font-size: 20px;
+				font-weight: bold;
+				color: #0077cc;
+			}
+
+			.company-info {
+				text-align: right;
+			}
+
+			main {
+				padding: 20px 40px;
+			}
+
+			h1 {
+				text-align: center;
+				text-transform: uppercase;
+				font-size: 20px;
+				margin-bottom: 30px;
+			}
+
+			.client-info {
+				margin-bottom: 30px;
+			}
+
+			.client-info strong {
+				display: inline-block;
+				width: 130px;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-bottom: 30px;
+			}
+
+			th,
+			td {
+				border: 1px solid #ccc;
+				padding: 6px 8px;
+				text-align: left;
+			}
+
+			th {
+				background: #f2f2f2;
+			}
+
+			tfoot td {
+				border: none;
+				font-size: 14px;
+			}
+
+			.total {
+				text-align: right;
+				font-size: 16px;
+				font-weight: bold;
+			}
+
+			footer {
+				border-top: 1px solid #ddd;
+				text-align: center;
+				font-size: 10px;
+				padding: 10px;
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+			}
+
+			.notes {
+				font-size: 11px;
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<table style="width:100%; border-collapse:collapse; border:none; margin-bottom:1rem;">
+				<tr style="border:none;">
+					<td style="vertical-align:middle; width:160px; style=" border:none;"">
+						{% if base64Logo %}
+							<img src="{{ base64Logo }}" alt="Logo" style="max-width:150px; height:auto; display:block;">
+						{% endif %}
+					</td>
+					<td style="vertical-align:middle; text-align:right; style=" border:none;"">
+						<strong>JC Habitats &amp; Services</strong><br>
+						Entreprise individuelle<br>
+						N° Siret : 53363513200020<br>
+						34 rue de Mouvaux<br>
+						59200 Tourcoing<br>
+						FR
+					</td>
+				</tr>
+			</table>
+		</header>
+
+		<main>
+			<h1>Devis n°{{ devis.numeroDevis }}</h1>
+			<section class="client-info">
+				<p>
+					<strong>Client :</strong>
+					{{ devis.client.nom|upper }}
+					{{ devis.client.prenom }}</p>
+				<p>
+					<strong>Date :</strong>
+					{{ devis.dateCreation|date('d/m/Y') }}</p>
+				<strong>Adresse du chantier :</strong><br>
+				<span class="ms-3">{{ devis.client.adresse }}</span><br>
+				<span class="ms-3">{{ devis.demande.ville }}</span>
+			</section>
+
+			<h3>{{ devis.demande.typeIntervention }}
+				ballon
+				{{devis.demande.capacite}}</h3>
+
+			<div class="d-flex justify-content-between align-items-center">
+				<h4 class="mb-0">Date d'émission :
+					{{ "now"|date("d/m/Y") }}</h4>
+				<h5 class="mb-0">Date de validé :
+					{{ "now"|date_modify("+30 days")|date("d/m/Y") }}
+				</h5>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th>Description</th>
+						<th>Qté</th>
+						<th>TVA 0%</th>
+						<th>Prix unitaire (€)</th>
+						<th>Prix total (€)</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for ligne in devis.lignes %}
+						<tr>
+							<td>
+								<strong>{{ ligne.title }}</strong><br>
+								{% if ligne.description %}
+									<small class="text-muted" style="white-space: pre-line;">
+										{{ ligne.description }}
+									</small>
+								{% endif %}
+							</td>
+							<td>{{ ligne.quantity }}</td>
+							<td>0</td>
+							<td>{{ ligne.unitPrice|number_format(2, ',', ' ') }}</td>
+							<td>{{ (ligne.quantity * ligne.unitPrice)|number_format(2, ',', ' ') }}</td>
+						</tr>
+					{% else %}
+						<tr>
+							<td colspan="5" class="text-center text-muted">
+								Aucune ligne de prestation enregistrée.
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+
+				<tfoot>
+					<tr>
+						<td colspan="4" class="total">Total HT :</td>
+						<td>
+							<strong>{{ devis.montantTotal|number_format(2, ',', ' ') }}
+								€</strong>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4" class="total">Total TTC :</td>
+						<td>
+							<strong>{{ devis.montantTotal|number_format(2, ',', ' ') }}
+								€</strong>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+
+			{# on passe à la page suivante #}
+			<div style="page-break-after: always;"></div>
+
+			<div>
+				<h4>Conditions générales</h4>
+				<p>Ce devis est valable 30 jours à compter de la date d’émission.</p>
+				<p>TVA non applicable, art. 293 B du CGI</p>
+				<p>Afin de confirmer votre accord et de planifier l’intervention, un acompte de 30 % est demandé à la signature du devis.<br>
+					Par virement: Titulaire: Deledique Jean-Charles IBAN: IE88 SUMU 9903 6511 9543 89 / BIC: SUMUIE22XXX<br>
+					Pour être accepté, le devis doit être daté, signé et suivi de la mention manuscrite « Bon pour accord ».<br>
+					“Le présent devis est établi sur la base des éléments apparents et accessibles lors de la visite préparatoire. Le Client reconnaît
+					expressément que toute découverte fortuite, lors du démontage ou de l’exécution des travaux (tels que, sans que cette liste soit
+					limitative, conduites, câbles, canalisations, raccordements, défauts structurels ou vices cachés), ne saurait engager la responsabilité
+					de l’Entreprise au titre du devis initial. Dans une telle hypothèse, l’Entreprise se réserve le droit d’interrompre l’exécution des travaux
+					en cours et de soumettre au Client un devis complémentaire pour validation préalable. L’acceptation expresse de ce devis par le
+					Client conditionne la poursuite des travaux.”</p>
+				<p>Merci de votre confiance.</p>
+			</div>
+		</main>
+	</body>
+</html>
