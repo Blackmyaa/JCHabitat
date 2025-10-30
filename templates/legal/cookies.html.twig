@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de cookies{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-body p-5">
+            <h1 class="mb-4 text-primary">🍪 Politique de cookies</h1>
+
+            <p>
+                Ce site utilise des cookies afin d’améliorer votre expérience utilisateur, mesurer
+                l’audience et proposer des contenus pertinents. Vous pouvez à tout moment
+                accepter ou refuser l’utilisation des cookies non essentiels.
+            </p>
+
+            <h3 class="mt-4">1. Qu’est-ce qu’un cookie ?</h3>
+            <p>
+                Un cookie est un petit fichier enregistré sur votre appareil (ordinateur, tablette,
+                smartphone) lorsque vous visitez un site web. Il permet au site de mémoriser vos
+                préférences et d’analyser la manière dont vous interagissez avec le contenu.
+            </p>
+
+            <h3 class="mt-4">2. Types de cookies utilisés</h3>
+            <ul>
+                <li><strong>Cookies strictement nécessaires :</strong> garantissent le bon fonctionnement du site.</li>
+                <li><strong>Cookies de performance :</strong> utilisés pour analyser la fréquentation.</li>
+                <li><strong>Cookies de personnalisation :</strong> mémorisent vos préférences.</li>
+            </ul>
+
+            <h3 class="mt-4">3. Gestion des cookies</h3>
+            <p>
+                Vous pouvez à tout moment modifier vos préférences via le bandeau de gestion des cookies
+                ou dans les paramètres de votre navigateur.
+            </p>
+
+            <p class="mt-4">
+                Pour plus d’informations, consultez notre <a href="{{ path('app_politique_confidentialite') }}">Politique de confidentialité</a>.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

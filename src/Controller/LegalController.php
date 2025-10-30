@@ -50,4 +50,10 @@ class LegalController extends AbstractController
             'company_name' => $this->params->get('company_name'),
         ]);
     }
+
+    #[Route('/politique-cookies', name: 'legal_cookies')]
+    public function cookies(): Response
+    {
+        return $this->render('legal/cookies.html.twig');
+    }
 }
