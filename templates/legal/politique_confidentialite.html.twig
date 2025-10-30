@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique de confidentialité{% endblock %}
+
+{% block body %}
+{% include "commun/nav.html.twig" %}
+
+<div class="legal-container">
+    <h1>Politique de confidentialité</h1>
+
+    <section>
+        <p>
+            Chez <strong>{{ company_name }}</strong>, la protection de vos données personnelles est une priorité.
+            Cette politique explique quelles informations nous collectons et comment nous les utilisons.
+        </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+        <h3>Données collectées</h3>
+        <p>Nous collectons uniquement les informations nécessaires à la gestion de vos demandes : nom, prénom, email, téléphone et message.</p>
+    </section>
+
+    <section>
+        <h3>Finalités du traitement</h3>
+        <ul>
+            <li>Répondre à vos demandes via nos formulaires.</li>
+            <li>Assurer le suivi de votre dossier et la gestion client.</li>
+            <li>Améliorer nos services et la qualité de nos échanges.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h3>Durée de conservation</h3>
+        <p>Les données sont conservées pendant une durée maximale de <strong>3 ans</strong> après le dernier contact.</p>
+    </section>
+
+    <section>
+        <h3>Vos droits</h3>
+        <p>
+            Conformément au RGPD, vous disposez d’un droit d’accès, de rectification, d’opposition et de suppression de vos données.  
+            Pour exercer ces droits, contactez-nous à :
+            <a href="mailto:{{ company_email }}">{{ company_email }}</a>.
+        </p>
+    </section>
+
+    <section>
+        <h3>Sécurité</h3>
+        <p>
+            Nous mettons en œuvre des mesures techniques et organisationnelles adaptées pour garantir la sécurité de vos données.
+        </p>
+    </section>
+</div>
+{% include "commun/_footer.html.twig" %}
+
+{% endblock %}

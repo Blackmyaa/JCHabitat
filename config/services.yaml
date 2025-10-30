@@ -5,6 +5,26 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     uploads_directory: '%kernel.project_dir%/public/uploads'
+    app.mail_from: 'contact@JCHabitat.fr'
+
+# Mentions légales
+    company_name: 'JCHabitat & Services'
+    company_legal_form: 'Entreprise individuelle au capital de 0 €'
+    company_address: '34 rue de Mouvaux, 59200 Tourcoing'
+    company_siret: '53363513200020'
+    company_responsable: 'Jean-Charles Deledique'
+    company_email: 'contact@jchabitat.fr'
+    company_phone: '06 12 34 56 78'
+
+    host_name: 'OVH SAS'
+    host_address: '2 rue Kellermann, 59100 Roubaix, France'
+    host_phone: '1007'
+
+    insurance_company: 'MAAF Assurances'
+    insurance_contract: '123456789'
+    insurance_zone: 'France métropolitaine'
+
+# Fin des mentions légales
 
 services:
     # default configuration for services in *this* file

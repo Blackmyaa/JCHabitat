@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conditions Générales de Vente{% endblock %}
+
+{% block body %}
+{% include "commun/nav.html.twig" %}
+
+<div class="legal-container">
+    <h1>Conditions Générales de Vente</h1>
+
+    <section>
+        <h3>Article 1 – Objet</h3>
+        <p>Les présentes conditions générales de vente régissent les prestations proposées par {{ company_name }} à ses clients.</p>
+    </section>
+
+    <section>
+        <h3>Article 2 – Devis et commandes</h3>
+        <p>Tout devis émis par {{ company_name }} a une validité de 30 jours. La commande devient effective après acceptation du devis et signature par le client.</p>
+    </section>
+
+    <section>
+        <h3>Article 3 – Tarifs et paiement</h3>
+        <p>Les prix indiqués sur le devis sont fermes et non révisables pendant sa période de validité. Le paiement s’effectue selon les modalités convenues lors de la commande.</p>
+    </section>
+
+    <section>
+        <h3>Article 4 – Délais et exécution</h3>
+        <p>Les délais d’intervention sont donnés à titre indicatif. {{ company_name }} ne saurait être tenue responsable des retards indépendants de sa volonté.</p>
+    </section>
+
+    <section>
+        <h3>Article 5 – Garantie et responsabilité</h3>
+        <p>{{ company_name }} garantit la conformité de ses prestations. Sa responsabilité ne peut être engagée qu’en cas de faute avérée.</p>
+    </section>
+
+    <section>
+        <h3>Article 6 – Litiges</h3>
+        <p>Toute réclamation devra être adressée à {{ company_name }} par courrier ou email. En cas de litige, les tribunaux compétents seront ceux du siège social de l’entreprise.</p>
+    </section>
+</div>
+{% include "commun/_footer.html.twig" %}
+
+{% endblock %}

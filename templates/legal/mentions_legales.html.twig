@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentions légales{% endblock %}
+
+{% block body %}
+{% include "commun/nav.html.twig" %}
+<div class="legal-container">
+    <h1>Mentions légales</h1>
+
+    <section>
+        <h3>Éditeur du site</h3>
+        <p>
+            <strong>{{ company_name }}</strong><br>
+            {{ company_legal_form }}<br>
+            {{ company_address }}<br>
+            <strong>SIRET :</strong> {{ company_siret }}<br>
+            <strong>Responsable :</strong> {{ company_responsable }}
+        </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+        <h3>Contact</h3>
+        <p>
+            📞 {{ company_phone }}<br>
+            ✉️ <a href="mailto:{{ company_email }}">{{ company_email }}</a>
+        </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+        <h3>Hébergement</h3>
+        <p>
+            <strong>{{ host_name }}</strong><br>
+            {{ host_address }}<br>
+            Téléphone : {{ host_phone }}
+        </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+        <h3>Assurance professionnelle</h3>
+        <p>
+            {{ insurance_company }} — Contrat n° {{ insurance_contract }}<br>
+            Zone couverte : {{ insurance_zone }}
+        </p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+        <h3>Propriété intellectuelle</h3>
+        <p>
+            Tous les contenus présents sur ce site (textes, images, logos, graphismes, etc.) sont la propriété de {{ company_name }} sauf mention contraire.  
+            Toute reproduction ou diffusion est strictement interdite sans autorisation écrite.
+        </p>
+    </section>
+
+    <section>
+        <h3>Protection des données personnelles</h3>
+        <p>
+            Les données collectées via les formulaires sont destinées exclusivement à {{ company_name }} pour le traitement de vos demandes.
+            Vous disposez d’un droit d’accès, de rectification et de suppression de vos données.
+        </p>
+        <p>
+            Pour exercer ces droits : <a href="mailto:{{ company_email }}">{{ company_email }}</a>
+        </p>
+    </section>
+
+    <section>
+        <h3>Cookies</h3>
+        <p>
+            Ce site utilise des cookies afin d’améliorer votre expérience utilisateur. Vous pouvez les désactiver à tout moment dans les paramètres de votre navigateur.
+        </p>
+    </section>
+</div>
+{% include "commun/_footer.html.twig" %}
+{% endblock %}
